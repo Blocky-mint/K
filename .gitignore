@@ -9,3 +9,12 @@ __pycache__/
 *.pywz
 *.pyzw
 *.pyzwz
+
+train/outputs/
+*/unsloth_compiled_cache/
+train/*.csv
+
+
+train/ThomasTheMaker/*
+
+data/openscad_dataset.json
