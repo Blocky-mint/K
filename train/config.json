@@ -55,9 +55,9 @@
     },
     "saving_config": {
       "save_local": true,
-      "save_16bit": true,
+      "save_16bit": false,
       "save_4bit": false,
-      "save_lora": false,
+      "save_lora": true,
       "push_to_hub": true
     },
     "logging_config": {

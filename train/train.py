@@ -444,8 +444,25 @@ if not hf_token:
     except Exception:
         hf_token = None
 
-# Skip local LoRA adapter saving - we only want the 16-bit merged model
-print("Skipping LoRA adapter saving - will only upload 16-bit merged model")
+# Save LoRA adapters if enabled
+if SAVE_LORA:
+    print("\n" + "="*50)
+    print("SAVING LORA ADAPTERS")
+    print("="*50)
+
+    if SAVE_LOCAL:
+        model.save_pretrained(HUB_MODEL_NAME)
+        tokenizer.save_pretrained(HUB_MODEL_NAME)
+        print(f"✓ LoRA adapters saved locally to: {HUB_MODEL_NAME}")
+
+    if PUSH_TO_HUB and hf_token:
+        model.push_to_hub(HUB_MODEL_NAME, token=hf_token)
+        tokenizer.push_to_hub(HUB_MODEL_NAME, token=hf_token)
+        print(f"✓ LoRA adapters uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
+    elif PUSH_TO_HUB and not hf_token:
+        print("Warning: HF_TOKEN not found. Skipping upload to Hugging Face.")
+else:
+    print("LoRA adapter saving disabled in config")
 
 """Now if you want to load the LoRA adapters we just saved for inference, set `False` to `True`:"""
 
@@ -469,7 +486,7 @@ if SAVE_16BIT:
     print("="*50)
     
     # Save locally first
-    local_16bit_path = f"{HUB_MODEL_NAME}_temp_16bit"
+    local_16bit_path = f"{HUB_MODEL_NAME}_16bit"
     model.save_pretrained_merged(local_16bit_path, tokenizer, save_method="merged_16bit")
     print(f"16-bit model saved locally to: {local_16bit_path}")
     
@@ -499,20 +516,17 @@ if SAVE_16BIT:
     elif PUSH_TO_HUB and not hf_token:
         print("Warning: HF_TOKEN not found. Skipping model upload to Hugging Face.")
     
-    # Clean up temporary local directory
-    import shutil
-    if os.path.exists(local_16bit_path):
-        shutil.rmtree(local_16bit_path, ignore_errors=True)
-        print(f"Cleaned up temporary directory: {local_16bit_path}")
-
-# Skip 4-bit and LoRA uploads - we only want the 16-bit merged model
-print("\nSkipping 4-bit and LoRA adapter uploads - only 16-bit merged model will be uploaded")
+    # Keep the local directory for manual upload if needed
+    print(f"16-bit model retained locally at: {local_16bit_path}")
 
 print("\n" + "="*50)
 print("TRAINING COMPLETE!")
 print("="*50)
-if PUSH_TO_HUB and hf_token and SAVE_16BIT:
-    print(f"✓ 16-bit merged model uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
+if PUSH_TO_HUB and hf_token:
+    if SAVE_16BIT:
+        print(f"✓ 16-bit merged model uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
+    if SAVE_LORA:
+        print(f"✓ LoRA adapters uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
     if CSV_LOG_ENABLED:
         print(f"✓ Training metrics included in repository")
 else:
