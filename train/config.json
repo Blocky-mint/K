@@ -33,7 +33,7 @@
     },
     "training_config": {
       "per_device_train_batch_size": 1,
-      "gradient_accumulation_steps": 2,
+      "gradient_accumulation_steps": 8,
       "warmup_steps": 5,
       "max_steps": -1,
       "num_train_epochs": 5,
@@ -44,7 +44,12 @@
       "output_dir": "outputs",
       "report_to": "none",
       "optim": "adamw_8bit",
-      "logging_steps": 1
+      "logging_steps": 1,
+      "save_strategy": "steps",
+      "save_steps": 100,
+      "save_total_limit": 3,
+      "eval_strategy": "steps",
+      "eval_steps": 100
     },
     "inference_config": {
       "max_new_tokens": 125,
@@ -55,7 +60,7 @@
     },
     "saving_config": {
       "save_local": true,
-      "save_16bit": false,
+      "save_16bit": true,
       "save_4bit": false,
       "save_lora": true,
       "push_to_hub": true

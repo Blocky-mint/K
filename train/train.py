@@ -22,6 +22,7 @@ training_config = config['training_config']
 inference_config = config['inference_config']
 saving_config = config['saving_config']
 logging_config = config['logging_config']
+checkpoint_config = config.get('checkpoint_config', {})
 
 # Model Configuration
 HUB_MODEL_NAME = model_config['hub_model_name']
@@ -71,6 +72,11 @@ OUTPUT_DIR = training_config['output_dir']
 REPORT_TO = training_config['report_to']
 OPTIM = training_config['optim']
 LOGGING_STEPS = training_config['logging_steps']
+SAVE_STRATEGY = training_config.get('save_strategy', 'steps')
+SAVE_STEPS = training_config.get('save_steps', 100)
+SAVE_TOTAL_LIMIT = training_config.get('save_total_limit', 3)
+EVAL_STRATEGY = training_config.get('eval_strategy', 'no')
+EVAL_STEPS = training_config.get('eval_steps', 100)
 
 # Inference Configuration
 MAX_NEW_TOKENS = inference_config['max_new_tokens']
@@ -233,6 +239,12 @@ tokenizer = get_chat_template(
 from datasets import load_dataset
 dataset = load_dataset(DATASET_NAME, split=DATASET_SPLIT)
 
+# Split dataset into train/validation (95/5 split)
+dataset = dataset.train_test_split(test_size=0.05, seed=SEED)
+train_dataset = dataset['train']
+eval_dataset = dataset['test']
+print(f"Training samples: {len(train_dataset)}, Validation samples: {len(eval_dataset)}")
+
 """We now use `convert_to_chatml` to convert the reformatted dataset (with input/output/system columns) to the correct format for finetuning purposes!"""
 
 def convert_to_chatml(example):
@@ -243,13 +255,12 @@ def convert_to_chatml(example):
         ]
     }
 
-dataset = dataset.map(
-    convert_to_chatml
-)
+train_dataset = train_dataset.map(convert_to_chatml)
+eval_dataset = eval_dataset.map(convert_to_chatml)
 
 """Let's see how row 100 looks like!"""
 
-dataset[100]
+train_dataset[100]
 
 """We now have to apply the chat template for `Gemma3` onto the conversations, and save it to `text`."""
 
@@ -258,13 +269,14 @@ def formatting_prompts_func(examples):
    texts = [tokenizer.apply_chat_template(convo, tokenize = False, add_generation_prompt = False).removeprefix('<bos>') for convo in convos]
    return { "text" : texts, }
 
-dataset = dataset.map(formatting_prompts_func, batched = True)
+train_dataset = train_dataset.map(formatting_prompts_func, batched = True)
+eval_dataset = eval_dataset.map(formatting_prompts_func, batched = True)
 
 """Let's see how the chat template did!
 
 """
 
-dataset[100]['text']
+train_dataset[100]['text']
 
 """<a name="Train"></a>
 ### Train the model
@@ -302,6 +314,11 @@ training_args = {
     "seed": SEED,
     "output_dir": OUTPUT_DIR,
     "report_to": REPORT_TO,
+    "save_strategy": SAVE_STRATEGY,
+    "save_steps": SAVE_STEPS,
+    "save_total_limit": SAVE_TOTAL_LIMIT,
+    "eval_strategy": EVAL_STRATEGY,
+    "eval_steps": EVAL_STEPS,
 }
 
 # Add either max_steps OR num_train_epochs, not both
@@ -313,8 +330,8 @@ else:
 trainer = SFTTrainer(
     model=model,
     tokenizer=tokenizer,
-    train_dataset=dataset,
-    eval_dataset=None,  # Can set up evaluation!
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
     args=SFTConfig(**training_args),
 )
 
@@ -333,11 +350,12 @@ trainer = train_on_responses_only(
 
 """Let's verify masking the instruction part is done! Let's print the 100th row again."""
 
-tokenizer.decode(trainer.train_dataset[100]["input_ids"])
+if len(trainer.train_dataset) > 100:
+    tokenizer.decode(trainer.train_dataset[100]["input_ids"])
 
-"""Now let's print the masked out example - you should see only the answer is present:"""
+    """Now let's print the masked out example - you should see only the answer is present:"""
 
-tokenizer.decode([tokenizer.pad_token_id if x == -100 else x for x in trainer.train_dataset[100]["labels"]]).replace(tokenizer.pad_token, " ")
+    tokenizer.decode([tokenizer.pad_token_id if x == -100 else x for x in trainer.train_dataset[100]["labels"]]).replace(tokenizer.pad_token, " ")
 
 # @title Show current memory stats
 gpu_stats = torch.cuda.get_device_properties(0)
@@ -348,7 +366,19 @@ print(f"{start_gpu_memory} GB of memory reserved.")
 
 """Let's train the model! To resume a training run, set `trainer.train(resume_from_checkpoint = True)`"""
 
-trainer_stats = trainer.train()
+# Check for existing checkpoints and resume if available
+import glob
+checkpoints = glob.glob(f"{OUTPUT_DIR}/checkpoint-*")
+resume_from_checkpoint = None
+if checkpoints:
+    # Get the latest checkpoint by sorting
+    latest_checkpoint = max(checkpoints, key=lambda x: int(x.split('-')[-1]))
+    resume_from_checkpoint = latest_checkpoint
+    print(f"Resuming training from checkpoint: {resume_from_checkpoint}")
+else:
+    print("No checkpoints found. Starting training from scratch.")
+
+trainer_stats = trainer.train(resume_from_checkpoint=resume_from_checkpoint)
 
 # @title Show final memory and time stats
 used_memory = round(torch.cuda.max_memory_reserved() / 1024 / 1024 / 1024, 3)
@@ -400,7 +430,7 @@ Let's run the model via Unsloth native inference! According to the `Gemma-3` tea
 """
 
 messages = [
-    {"role" : 'user', 'content' : dataset['conversations'][10][0]['content']}
+    {"role" : 'user', 'content' : train_dataset['conversations'][10][0]['content']}
 ]
 text = tokenizer.apply_chat_template(
     messages,
