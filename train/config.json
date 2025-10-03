@@ -49,12 +49,12 @@
       "save_strategy": "steps",
       "save_steps": 100,
       "save_total_limit": 3,
-      "eval_strategy": "steps",
+      "eval_strategy": "no",
       "eval_steps": 100
     },
     "inference_config": {
-      "max_new_tokens": 125,
-      "temperature": 1.0,
+      "max_new_tokens": 1024,
+      "temperature": 0.8,
       "top_p": 0.95,
       "top_k": 64,
       "do_sample": true
