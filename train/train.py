@@ -5,6 +5,8 @@ import csv
 import json
 from datetime import datetime
 from transformers import TrainerCallback
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # =============================================================================
 # CONFIGURATION LOADING FROM JSON
@@ -95,6 +97,7 @@ PUSH_TO_HUB = saving_config['push_to_hub']
 # CSV Logging Configuration
 CSV_LOG_ENABLED = logging_config['csv_log_enabled']
 CSV_LOG_FILE = f"{HUB_MODEL_NAME}/training_metrics.csv"
+CSV_PLOT_FILE = f"{HUB_MODEL_NAME}/training_metrics.png"
 
 # Available Models (for reference)
 FOURBIT_MODELS = [
@@ -394,35 +397,90 @@ print(f"Peak reserved memory for training = {used_memory_for_lora} GB.")
 print(f"Peak reserved memory % of max memory = {used_percentage} %.")
 print(f"Peak reserved memory for training % of max memory = {lora_percentage} %.")
 
-# @title Show CSV metrics summary
-if CSV_LOG_ENABLED and csv_callback and csv_callback.metrics_data:
-    print("\n" + "="*50)
-    print("TRAINING METRICS SUMMARY")
-    print("="*50)
-    
-    # Calculate summary statistics
-    losses = [m['loss'] for m in csv_callback.metrics_data if m['loss'] is not None]
-    learning_rates = [m['learning_rate'] for m in csv_callback.metrics_data if m['learning_rate'] is not None]
-    grad_norms = [m['grad_norm'] for m in csv_callback.metrics_data if m['grad_norm'] is not None]
-    
-    if losses:
-        print(f"Final Loss: {losses[-1]:.4f}")
-        print(f"Initial Loss: {losses[0]:.4f}")
-        print(f"Loss Reduction: {((losses[0] - losses[-1]) / losses[0] * 100):.2f}%")
-        print(f"Min Loss: {min(losses):.4f}")
-        print(f"Max Loss: {max(losses):.4f}")
-    
-    if learning_rates:
-        print(f"Final Learning Rate: {learning_rates[-1]:.2e}")
-        print(f"Initial Learning Rate: {learning_rates[0]:.2e}")
-    
-    if grad_norms:
-        print(f"Final Gradient Norm: {grad_norms[-1]:.4f}")
-        print(f"Average Gradient Norm: {sum(grad_norms)/len(grad_norms):.4f}")
-    
-    print(f"Total Logged Steps: {len(csv_callback.metrics_data)}")
-    print(f"CSV File: {CSV_LOG_FILE}")
-    print("="*50)
+# @title Show CSV metrics summary and generate plot
+# Always generate plot if CSV file exists with data
+if os.path.exists(CSV_LOG_FILE):
+    try:
+        df = pd.read_csv(CSV_LOG_FILE)
+
+        # Only show summary and plot if there's actual data
+        if len(df) > 0:
+            print("\n" + "="*50)
+            print("TRAINING METRICS SUMMARY")
+            print("="*50)
+
+            # Calculate summary statistics
+            if 'loss' in df.columns:
+                losses = df['loss'].dropna()
+                if len(losses) > 0:
+                    print(f"Final Loss: {losses.iloc[-1]:.4f}")
+                    print(f"Initial Loss: {losses.iloc[0]:.4f}")
+                    print(f"Loss Reduction: {((losses.iloc[0] - losses.iloc[-1]) / losses.iloc[0] * 100):.2f}%")
+                    print(f"Min Loss: {losses.min():.4f}")
+                    print(f"Max Loss: {losses.max():.4f}")
+
+            if 'learning_rate' in df.columns:
+                learning_rates = df['learning_rate'].dropna()
+                if len(learning_rates) > 0:
+                    print(f"Final Learning Rate: {learning_rates.iloc[-1]:.2e}")
+                    print(f"Initial Learning Rate: {learning_rates.iloc[0]:.2e}")
+
+            if 'grad_norm' in df.columns:
+                grad_norms = df['grad_norm'].dropna()
+                if len(grad_norms) > 0:
+                    print(f"Final Gradient Norm: {grad_norms.iloc[-1]:.4f}")
+                    print(f"Average Gradient Norm: {grad_norms.mean():.4f}")
+
+            print(f"Total Logged Steps: {len(df)}")
+            print(f"CSV File: {CSV_LOG_FILE}")
+            print("="*50)
+
+            # Plot training metrics
+            fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+            fig.suptitle('Training Metrics', fontsize=16, fontweight='bold')
+
+            # Plot 1: Loss over steps
+            if 'loss' in df.columns and df['loss'].notna().any():
+                axes[0, 0].plot(df['step'], df['loss'], linewidth=2, color='#e74c3c')
+                axes[0, 0].set_xlabel('Step', fontweight='bold')
+                axes[0, 0].set_ylabel('Loss', fontweight='bold')
+                axes[0, 0].set_title('Training Loss')
+                axes[0, 0].grid(True, alpha=0.3)
+
+            # Plot 2: Learning rate over steps
+            if 'learning_rate' in df.columns and df['learning_rate'].notna().any():
+                axes[0, 1].plot(df['step'], df['learning_rate'], linewidth=2, color='#3498db')
+                axes[0, 1].set_xlabel('Step', fontweight='bold')
+                axes[0, 1].set_ylabel('Learning Rate', fontweight='bold')
+                axes[0, 1].set_title('Learning Rate Schedule')
+                axes[0, 1].grid(True, alpha=0.3)
+                axes[0, 1].ticklabel_format(style='scientific', axis='y', scilimits=(0,0))
+
+            # Plot 3: Gradient norm over steps
+            if 'grad_norm' in df.columns and df['grad_norm'].notna().any():
+                axes[1, 0].plot(df['step'], df['grad_norm'], linewidth=2, color='#2ecc71')
+                axes[1, 0].set_xlabel('Step', fontweight='bold')
+                axes[1, 0].set_ylabel('Gradient Norm', fontweight='bold')
+                axes[1, 0].set_title('Gradient Norm')
+                axes[1, 0].grid(True, alpha=0.3)
+
+            # Plot 4: Loss over epochs
+            if 'epoch' in df.columns and 'loss' in df.columns and df['loss'].notna().any():
+                axes[1, 1].plot(df['epoch'], df['loss'], linewidth=2, color='#9b59b6')
+                axes[1, 1].set_xlabel('Epoch', fontweight='bold')
+                axes[1, 1].set_ylabel('Loss', fontweight='bold')
+                axes[1, 1].set_title('Loss over Epochs')
+                axes[1, 1].grid(True, alpha=0.3)
+
+            plt.tight_layout()
+            plt.savefig(CSV_PLOT_FILE, dpi=300, bbox_inches='tight')
+            print(f"\n✓ Training metrics plot saved to: {CSV_PLOT_FILE}")
+            plt.close()
+        else:
+            print("\nNo training data found in CSV file - skipping metrics summary and plot")
+
+    except Exception as e:
+        print(f"\nWarning: Failed to generate training metrics summary/plot: {e}")
 
 """<a name="Inference"></a>
 ### Inference
@@ -449,6 +507,7 @@ outputs = model.generate(
     top_p=TOP_P,
     top_k=TOP_K,
     do_sample=DO_SAMPLE,
+    repetition_penalty=1.1,  # Reduce repetition in generated text
     pad_token_id=tokenizer.eos_token_id,
     use_cache=False,  # Disable cache to avoid compatibility issues
 )
@@ -526,10 +585,12 @@ if SAVE_16BIT:
         model.push_to_hub_merged(HUB_MODEL_NAME, tokenizer, save_method="merged_16bit", token=hf_token)
         print("✓ 16-bit merged model uploaded to Hugging Face Hub")
         
-        # Upload training metrics CSV if it exists
-        if CSV_LOG_ENABLED and os.path.exists(CSV_LOG_FILE):
-            from huggingface_hub import HfApi
-            api = HfApi()
+        # Upload training metrics CSV and plot if they exist (always, not just when CSV_LOG_ENABLED)
+        from huggingface_hub import HfApi
+        api = HfApi()
+
+        # Upload CSV
+        if os.path.exists(CSV_LOG_FILE):
             try:
                 print(f"Uploading training metrics: {CSV_LOG_FILE}")
                 api.upload_file(
@@ -540,7 +601,21 @@ if SAVE_16BIT:
                 )
                 print("✓ Training metrics CSV uploaded to Hugging Face Hub")
             except Exception as e:
-                print(f"Warning: Failed to upload training metrics: {e}")
+                print(f"Warning: Failed to upload training metrics CSV: {e}")
+
+        # Upload plot
+        if os.path.exists(CSV_PLOT_FILE):
+            try:
+                print(f"Uploading training plot: {CSV_PLOT_FILE}")
+                api.upload_file(
+                    path_or_fileobj=CSV_PLOT_FILE,
+                    path_in_repo="training_metrics.png",
+                    repo_id=HUB_MODEL_NAME,
+                    token=hf_token
+                )
+                print("✓ Training metrics plot uploaded to Hugging Face Hub")
+            except Exception as e:
+                print(f"Warning: Failed to upload training metrics plot: {e}")
         
         print(f"\n🎉 Model available at: https://huggingface.co/{HUB_MODEL_NAME}")
     elif PUSH_TO_HUB and not hf_token:
@@ -557,8 +632,8 @@ if PUSH_TO_HUB and hf_token:
         print(f"✓ 16-bit merged model uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
     if SAVE_LORA:
         print(f"✓ LoRA adapters uploaded to: https://huggingface.co/{HUB_MODEL_NAME}")
-    if CSV_LOG_ENABLED:
-        print(f"✓ Training metrics included in repository")
+    if os.path.exists(CSV_LOG_FILE):
+        print(f"✓ Training metrics (CSV & plot) included in repository")
 else:
     print("Model training completed but not uploaded to Hugging Face")
 print("="*50)

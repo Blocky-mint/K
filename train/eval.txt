@@ -1,0 +1,150 @@
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+======================================================================
+LOADING MODEL FOR EVALUATION
+======================================================================
+==((====))==  Unsloth 2025.9.11: Fast Gemma3 patching. Transformers: 4.56.2.
+   \\   /|    NVIDIA GeForce RTX 4060 Laptop GPU. Num GPUs = 1. Max memory: 7.623 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.8.0+cu128. CUDA: 8.9. CUDA Toolkit: 12.8. Triton: 3.4.0
+\        /    Bfloat16 = TRUE. FA [Xformers = 0.0.32.post2. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: Gemma3 does not support SDPA - switching to fast eager.
+✓ Model loaded: ThomasTheMaker/k-270m
+
+======================================================================
+EVALUATION TEST
+======================================================================
+Prompt: hey cadmonkey, make me a round table
+
+
+──────────────────────────────────────────────────────────────────────
+Repetition Penalty: 1.0
+──────────────────────────────────────────────────────────────────────
+Output:
+user
+hey cadmonkey, make me a round table
+model
+high = 1; //[0:high,1:medium,2:low,3:medium,4:medium-high,5:medium-high-high,6:high-high,7:medium-high-high-high,8:medium-high-high-high-high-high]
+
+// How many squares do you want to create?
+tiny_n = 45; //[15:50]
+
+// The height of the table in mm
+table_height = 60; //[40:20
+
+Text Analysis:
+  - Total words: 38
+  - Unique words: 34
+  - Repetition ratio: 10.53%
+
+OpenSCAD Validation:
+  - Code extracted: ✓ (330 chars)
+  - Attempting to render...
+  - Rendering: ✗ FAILED
+  - Error: ERROR: Parser error: syntax error in file ../../../../tmp/tmpj0fhd9ud.scad, line 2
+Can't parse file '/tmp/tmpj0fhd9ud.scad'!
+
+──────────────────────────────────────────────────────────────────────
+Repetition Penalty: 1.1
+──────────────────────────────────────────────────────────────────────
+Output:
+user
+hey cadmonkey, make me a round table
+model
+x_total=10;
+
+
+/*[Hidden]*/      // Variable parameters. (Global variable)
+
+squareish("9"); // create squaretable with no bars at the right - then move "small" box to next step for corner rounding on top edges}   
+
+
+
+module RoundTable(l="circle", r)=pi*r-256/784*(sqrt((size-.3)/scale)^n);মহানtable();  
+
+
+
+
+difference() { 	{center}( x-=sqs([no:=ft := open,-free,(f =(fl)-eq(/fe)))]),
+
+Text Analysis:
+  - Total words: 50
+  - Unique words: 49
+  - Repetition ratio: 2.00%
+
+OpenSCAD Validation:
+  - Code extracted: ✓ (432 chars)
+  - Attempting to render...
+  - Rendering: ✗ FAILED
+  - Error: ERROR: Parser error: syntax error in file ../../../../tmp/tmp76ntdsuk.scad, line 2
+Can't parse file '/tmp/tmp76ntdsuk.scad'!
+
+──────────────────────────────────────────────────────────────────────
+Repetition Penalty: 1.15
+──────────────────────────────────────────────────────────────────────
+Output:
+user
+hey cadmonkey, make me a round table
+model
+#[one_n] 
+
+part = "all"; // ["sphere",    "round"]*///  the different options have been shown in my last tutorial. Please see how to use them and find your desired shape!
+
+
+use <write/WriteStratifyশরণ انتప్పుడు লিখছি:9.*413>/.6; //[l--520], [-D-87],[M-.=-R,-S].		".When using ".Pi_", you can choose the default Pi , if it doesn't work then just change phi or radian values instead of this .length )
+
+
+
+
+module
+
+Text Analysis:
+  - Total words: 70
+  - Unique words: 68
+  - Repetition ratio: 2.86%
+
+OpenSCAD Validation:
+  - Code extracted: ✓ (458 chars)
+  - Attempting to render...
+  - Rendering: ✗ FAILED
+  - Error: ERROR: Parser error: syntax error in file ../../../../tmp/tmp5p6g8_bu.scad, line 2
+Can't parse file '/tmp/tmp5p6g8_bu.scad'!
+
+──────────────────────────────────────────────────────────────────────
+Repetition Penalty: 1.2
+──────────────────────────────────────────────────────────────────────
+Output:
+user
+hey cadmonkey, make me a round table
+model
+/* [Global] */
+
+//what is the angle (for 3d model of flat base)
+
+
+rotate_extrude(convexity=90){	  union(){     translate([12.5+6*cos((87-4)/heringf)),[length+(x/er = cos ((eighty*(height-(maxশরণ")), hergingof),(shegima/(vertical)),mineri($def)))]) smooth () { //base rectangle remaining remains remain and nice circles for detail in bottom square } #width replaced by "h" length printed on top street or shape
+
+
+
+
+
+Text Analysis:
+  - Total words: 57
+  - Unique words: 56
+  - Repetition ratio: 1.75%
+
+OpenSCAD Validation:
+  - Code extracted: ✓ (458 chars)
+  - Attempting to render...
+  - Rendering: ✗ FAILED
+  - Error: ERROR: Parser error: syntax error in file ../../../../tmp/tmpy7wtca1c.scad, line 2
+Can't parse file '/tmp/tmpy7wtca1c.scad'!
+
+======================================================================
+EVALUATION COMPLETE
+======================================================================
+
+Recommendation:
+Choose the repetition_penalty value that produces the most coherent
+output without excessive repetition. Typically 1.1-1.15 works well.
