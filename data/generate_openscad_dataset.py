@@ -152,9 +152,13 @@ def format_time(seconds):
 
 def load_progress():
     """Load the most recent checkpoint if it exists"""
-    checkpoint_files = sorted(Path(".").glob("checkpoint_*.json"), reverse=True)
+    checkpoint_files = list(Path(".").glob("checkpoint_*.json"))
 
     if checkpoint_files:
+        # Sort by numeric index, not alphabetically
+        checkpoint_files = sorted(checkpoint_files,
+                                  key=lambda x: int(x.stem.split('_')[1]),
+                                  reverse=True)
         latest_checkpoint = checkpoint_files[0]
         # Extract the index from filename like "checkpoint_100.json"
         checkpoint_index = int(latest_checkpoint.stem.split('_')[1])
@@ -204,8 +208,8 @@ def main():
         "disk", "plate", "ring", "washer", "spacer", "bushing", "collar"
     ]
 
-    # Generate 7000 entries by cycling through objects
-    target_count = 7000
+    # Generate 10000 entries by cycling through objects
+    target_count = 10000
     objects = []
     for i in range(target_count):
         obj = base_objects[i % len(base_objects)]
@@ -307,11 +311,11 @@ def main():
         try:
             # This will create the repo and upload data in the correct format
             dataset.push_to_hub(
-                "ThomasTheMaker/Synthetic-OpenSCAD",
+                "ThomasTheMaker/Synthetic-OpenSCAD-16WSL",
                 private=False
             )
-            print(f"✓ Dataset uploaded to ThomasTheMaker/Synthetic-OpenSCAD")
-            print(f"  View at: https://huggingface.co/datasets/ThomasTheMaker/Synthetic-OpenSCAD")
+            print(f"✓ Dataset uploaded to ThomasTheMaker/Synthetic-OpenSCAD-16WSL")
+            print(f"  View at: https://huggingface.co/datasets/ThomasTheMaker/Synthetic-OpenSCAD-16WSL")
         except Exception as e:
             print(f"Error uploading to Hub: {e}")
             print("Make sure you're logged in: huggingface-cli login")
