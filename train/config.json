@@ -1,14 +1,14 @@
 {
     "model_config": {
-      "hub_model_name": "ThomasTheMaker/k-270m",
-      "base_model_name": "unsloth/gemma-3-270m-it",
+      "hub_model_name": "ThomasTheMaker/k-1b",
+      "base_model_name": "unsloth/gemma-3-1b-it",
       "max_seq_length": 1024,
       "load_in_4bit": true,
       "load_in_8bit": false,
       "full_finetuning": false
     },
     "dataset_config": {
-      "dataset_name": "ThomasTheMaker/OpenSCAD",
+      "dataset_name": "ThomasTheMaker/Synthetic-OpenSCAD-16WSL",
       "dataset_split": "train",
       "chat_template": "gemma3"
     },
@@ -32,7 +32,7 @@
       ]
     },
     "training_config": {
-      "per_device_eval_batch_size": 1,
+      "per_device_eval_batch_size": 0,
       "per_device_train_batch_size": 1,
       "gradient_accumulation_steps": 8,
       "warmup_steps": 5,
@@ -47,10 +47,10 @@
       "optim": "adamw_8bit",
       "logging_steps": 1,
       "save_strategy": "steps",
-      "save_steps": 100,
+      "save_steps": 300,
       "save_total_limit": 3,
       "eval_strategy": "no",
-      "eval_steps": 100
+      "eval_steps": 1000
     },
     "inference_config": {
       "max_new_tokens": 1024,
