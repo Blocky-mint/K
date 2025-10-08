@@ -28,19 +28,20 @@ def load_model(config):
     model_config = config['model_config']
     model_name = model_config['hub_model_name']
     max_seq_length = model_config['max_seq_length']
-    load_in_4bit = model_config['load_in_4bit']
-    
+
     # Download model locally first
     from huggingface_hub import snapshot_download
     print(f"Downloading model: {model_name}")
     local_path = snapshot_download(model_name)
     print(f"Model downloaded to: {local_path}")
-    
+
+    # Load model in full precision (not 4bit) for GGUF conversion
     print(f"Loading model from local path: {local_path}")
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=local_path,
         max_seq_length=max_seq_length,
-        load_in_4bit=load_in_4bit,
+        load_in_4bit=False,  # Must be False for GGUF conversion
+        dtype=None,  # Auto-detect dtype
         trust_remote_code=True
     )
     print("Model loaded successfully!")
@@ -62,12 +63,14 @@ def convert_to_gguf(model, tokenizer, quantization_type="f16", base_model_name="
     print(f"Target file: {final_filename}")
     
     try:
-        # First save the model in merged format
-        print("Saving merged model...")
-        model.save_pretrained_merged(temp_model_dir, tokenizer, save_method="merged_16bit")
-        
+        # Save the model using standard save_pretrained
+        print("Saving model and tokenizer...")
+        model.save_pretrained(temp_model_dir)
+        tokenizer.save_pretrained(temp_model_dir)
+
         # Verify the model directory has the required files
-        if not os.path.exists(os.path.join(temp_model_dir, "config.json")):
+        config_path = os.path.join(temp_model_dir, "config.json")
+        if not os.path.exists(config_path):
             raise Exception(f"config.json not found in {temp_model_dir}")
         
         print(f"Model saved to: {temp_model_dir}")

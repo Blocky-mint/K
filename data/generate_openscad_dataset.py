@@ -185,31 +185,84 @@ def load_progress():
     return 0, []
 
 def main():
-    # Expanded list of objects to generate 7000 rows
+    # Expanded list of objects to generate 40000 rows
     base_objects = [
+        # Basic shapes
         "cube", "sphere", "cylinder", "cone", "torus", "pyramid", "prism",
         "box", "ring", "tube", "hexagon", "octagon", "pentagon", "star", "gear",
+
+        # Hardware
         "screw", "bolt", "nut", "washer", "spring", "coil", "helix",
-        "cup", "mug", "bowl", "plate", "spoon", "fork", "knife",
-        "bottle", "jar", "container", "lid", "cap", "stopper", "cork",
-        "wheel", "axle", "bearing", "pulley", "lever", "hinge", "joint",
         "bracket", "mount", "stand", "base", "platform", "frame", "support",
         "rod", "shaft", "pin", "peg", "dowel", "stake", "pole",
-        "block", "brick", "tile", "panel", "sheet", "slab", "plank",
-        "ball", "dome", "hemisphere", "arch", "vault", "pillar", "column",
-        "beam", "strut", "brace", "crossbar", "spacer", "shim", "wedge",
         "clip", "clamp", "hook", "latch", "lock", "key", "handle",
         "knob", "button", "switch", "dial", "slider", "toggle", "lever",
-        "funnel", "nozzle", "spout", "valve", "pipe", "elbow", "tee",
-        "connector", "adapter", "coupler", "fitting", "flange", "gasket",
-        "tray", "shelf", "rack", "holder", "organizer", "divider", "separator",
+
+        # Kitchenware
+        "cup", "mug", "bowl", "plate", "spoon", "fork", "knife",
+        "bottle", "jar", "container", "lid", "cap", "stopper", "cork",
+        "funnel", "nozzle", "spout", "tray", "shelf", "rack", "holder",
+
+        # Mechanical
+        "wheel", "axle", "bearing", "pulley", "lever", "hinge", "joint",
+        "valve", "pipe", "elbow", "tee", "connector", "adapter", "coupler",
+        "fitting", "flange", "gasket", "spacer", "bushing", "collar",
+
+        # Building blocks
+        "block", "brick", "tile", "panel", "sheet", "slab", "plank",
+        "ball", "dome", "hemisphere", "arch", "vault", "pillar", "column",
+        "beam", "strut", "brace", "crossbar", "shim", "wedge",
         "ramp", "slope", "step", "stair", "ladder", "rail", "banister",
         "housing", "enclosure", "case", "shell", "cover", "sleeve", "shroud",
-        "disk", "plate", "ring", "washer", "spacer", "bushing", "collar"
+        "disk", "organizer", "divider", "separator",
+
+        # Animals
+        "chicken", "cat", "pig", "dog", "horse", "cow", "sheep", "rabbit",
+        "duck", "goose", "turkey", "parrot", "eagle", "owl", "penguin",
+        "fish", "shark", "whale", "dolphin", "octopus", "squid", "crab",
+        "elephant", "giraffe", "lion", "tiger", "bear", "wolf", "fox",
+        "deer", "moose", "buffalo", "rhinoceros", "hippopotamus", "zebra",
+        "monkey", "gorilla", "kangaroo", "koala", "panda", "raccoon",
+        "squirrel", "hedgehog", "turtle", "frog", "snake", "lizard",
+        "butterfly", "bee", "dragonfly", "beetle", "spider", "snail",
+
+        # Weird & Random Objects
+        "toilet", "bathtub", "sink", "faucet", "showerhead", "plunger",
+        "toothbrush", "comb", "hairbrush", "mirror", "soap dish",
+        "trophy", "medal", "crown", "tiara", "scepter", "throne",
+        "dice", "domino", "chess piece", "playing card", "poker chip",
+        "balloon", "party hat", "confetti", "streamer", "candle",
+        "lamp", "lightbulb", "lantern", "flashlight", "torch",
+        "umbrella", "cane", "walking stick", "crutch", "wheelchair",
+        "boot", "shoe", "sandal", "slipper", "sock", "hat", "helmet",
+        "pencil", "pen", "crayon", "marker", "eraser", "sharpener",
+        "paperclip", "stapler", "tape dispenser", "scissors", "ruler",
+        "calculator", "compass", "protractor", "magnifying glass",
+        "hourglass", "clock", "watch", "sundial", "metronome",
+        "bell", "whistle", "horn", "drum", "guitar", "piano key",
+        "anchor", "ship wheel", "telescope", "periscope", "binoculars",
+        "rocket", "satellite", "UFO", "spaceship", "robot", "alien",
+        "skull", "bone", "tooth", "eyeball", "brain", "heart",
+        "tree", "cactus", "mushroom", "flower", "leaf", "acorn",
+        "apple", "banana", "orange", "pear", "pineapple", "strawberry",
+        "carrot", "broccoli", "corn", "pumpkin", "watermelon",
+        "dumbbell", "barbell", "kettlebell", "basketball", "football",
+        "baseball", "tennis ball", "golf ball", "bowling pin", "dart",
+        "chess board", "Rubik's cube", "puzzle piece", "LEGO brick",
+        "boomerang", "frisbee", "yo-yo", "spinning top", "slinky",
+        "hourglass", "infinity symbol", "peace sign", "yin yang",
+        "snowflake", "snowman", "igloo", "ice cream cone", "popsicle",
+        "donut", "pretzel", "cookie", "croissant", "bagel", "waffle",
+        "tent", "sleeping bag", "backpack", "suitcase", "briefcase",
+        "treasure chest", "safe", "vault door", "padlock", "chain",
+        "traffic cone", "fire hydrant", "stop sign", "parking meter",
+        "mailbox", "birdhouse", "doghouse", "barn", "windmill",
+        "lighthouse", "castle tower", "bridge", "tunnel", "gate",
+        "fountain", "well", "watering can", "garden gnome", "scarecrow"
     ]
 
-    # Generate 10000 entries by cycling through objects
-    target_count = 10000
+    # Generate 30000 entries by cycling through objects
+    target_count = 30000
     objects = []
     for i in range(target_count):
         obj = base_objects[i % len(base_objects)]
