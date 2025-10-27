@@ -20,3 +20,4 @@ train/ThomasTheMaker/*
 data/openscad_dataset.json
 
 train/gguf/
+train/models/

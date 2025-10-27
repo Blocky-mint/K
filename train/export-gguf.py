@@ -63,10 +63,9 @@ def convert_to_gguf(model, tokenizer, quantization_type="f16", base_model_name="
     print(f"Target file: {final_filename}")
     
     try:
-        # Save the model using standard save_pretrained
+        # Save the model using Unsloth's merged save method
         print("Saving model and tokenizer...")
-        model.save_pretrained(temp_model_dir)
-        tokenizer.save_pretrained(temp_model_dir)
+        model.save_pretrained_merged(temp_model_dir, tokenizer, save_method="merged_16bit")
 
         # Verify the model directory has the required files
         config_path = os.path.join(temp_model_dir, "config.json")
@@ -116,8 +115,16 @@ def convert_to_gguf(model, tokenizer, quantization_type="f16", base_model_name="
             "F16": "f16", 
             "BF16": "bf16",
             "Q8_0": "q8_0",
-            "Q4_0": "q8_0",  # q4_0 not supported, use q8_0
-            "Q2_K": "q8_0",  # q2_k not supported, use q8_0
+            # K-quants (modern, high-quality quantization methods)
+            "Q2_K": "q2_k",
+            "Q3_K_S": "q3_k_s",
+            "Q3_K_M": "q3_k_m",
+            "Q3_K_L": "q3_k_l",
+            "Q4_K_S": "q4_k_s",
+            "Q4_K_M": "q4_k_m",  # Popular: good quality, small size
+            "Q5_K_S": "q5_k_s",
+            "Q5_K_M": "q5_k_m",  # Higher quality 5-bit
+            "Q6_K": "q6_k",      # Near-lossless 6-bit
         }
         
         outtype = outtype_map.get(quantization_type.upper(), "f16")
@@ -213,12 +220,21 @@ def main():
     print(f"Source model: {hub_model_name}")
     print(f"GGUF repository: {gguf_repo_name}")
     
-    # Quantization types to convert (only supported ones)
+    # Quantization types to convert
+    # Customize this list based on your needs (more types = longer conversion time)
     quantization_types = [
-        "F32",      # Full 32-bit precision (largest file)
-        "F16",      # Full 16-bit precision 
-        "BF16",     # Brain Float 16-bit precision
-        "Q8_0",     # 8-bit quantization (good balance)
+        # Full precision formats
+        "F16",      # Full 16-bit precision (recommended baseline)
+        # "F32",    # Full 32-bit precision (very large, uncomment if needed)
+        # "BF16",   # Brain Float 16-bit precision (uncomment if needed)
+        
+        # Quantized formats (K-quants are modern, high-quality methods)
+        "Q8_0",     # 8-bit quantization (high quality)
+        "Q6_K",     # 6-bit K-quant (near-lossless, good for high quality)
+        "Q5_K_M",   # 5-bit K-quant medium (excellent quality/size balance)
+        "Q4_K_M",   # 4-bit K-quant medium (most popular, good quality, smaller size)
+        "Q3_K_M",   # 3-bit K-quant medium (very small, still decent quality)
+        # "Q2_K",   # 2-bit K-quant (smallest, lower quality, uncomment if needed)
     ]
     
     # Create gguf directory
