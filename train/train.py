@@ -253,8 +253,8 @@ print(f"Training samples: {len(train_dataset)}, Validation samples: {len(eval_da
 def convert_to_chatml(example):
     return {
         "conversations": [
-            {"role": "user", "content": example["prompt"]},
-            {"role": "assistant", "content": example["response"]}
+            {"role": "user", "content": "hey cadmonkey, create me a " + example["name"]},
+            {"role": "assistant", "content": example["code"]}
         ]
     }
 
