@@ -1,0 +1,172 @@
+[
+  {
+    "code": "cube(size = 10);",
+    "previous_name": "cube",
+    "name": "die"
+  },
+  {
+    "code": "sphere(r = 10);",
+    "previous_name": "sphere",
+    "name": "tennis ball"
+  },
+  {
+    "code": "cylinder(h=10, r=5, $fn=100);",
+    "previous_name": "cylinder",
+    "name": "cylindrical stump"
+  },
+  {
+    "code": "use <cone.scad>\nmodule cone(h, r1, r2, $fn) {\n    linear_extrude(height = h, slices = $fn)\n    circle(r = r1);\n}\n\ncone(h=10, r1=5, r2=0, $fn=50);",
+    "previous_name": "cone",
+    "name": "cylindrical sphere"
+  },
+  {
+    "code": "module box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\nbox(10, 20, 30);",
+    "previous_name": "box",
+    "name": "cube"
+  },
+  {
+    "code": "module ring(inner_radius, outer_radius, height, segments) {\n  difference() {\n    cylinder(h = height, r = outer_radius, $fn = segments);\n    cylinder(h = height, r = inner_radius, $fn = segments);\n  }\n}\n\nring(inner_radius = 10, outer_radius = 20, height = 2, segments = 50);",
+    "previous_name": "ring",
+    "name": "doughnut"
+  },
+  {
+    "code": "module tube(r, h, segments) {\n  cylinder(r = r, h = h, $fn = segments);\n}\n\ntube(r=10, h=20, segments=60);",
+    "previous_name": "tube",
+    "name": "cylinder"
+  },
+  {
+    "code": "module hexagon(radius) {\n  linear_extrude(height = 1) {\n    polygon(points = [\n      [radius, 0],\n      [radius * cos(60), radius * sin(60)],\n      [radius * cos(120), radius * sin(120)],\n      [radius * cos(180), radius * sin(180)],\n      [radius * cos(240), radius * sin(240)],\n      [radius * cos(300), radius * sin(300)]\n    ]);\n  }\n}\n\nhexagon(radius = 10);",
+    "previous_name": "hexagon",
+    "name": "octagonal pyramid"
+  },
+  {
+    "code": "module octagon(radius, thickness) {\n  difference() {\n    cylinder(h = thickness, r = radius);\n    for (i = [0:7]) {\n      rotate([0, 0, i * 45]) {\n        translate([radius, 0, 0]) {\n          cube([radius * 2, thickness, thickness], center = true);\n        }\n      }\n    }\n  }\n}\n\noctagon(radius = 10, thickness = 2);",
+    "previous_name": "octagon",
+    "name": "egg shaped button"
+  },
+  {
+    "code": "// Screw parameters\nscrew_diameter = 5;\nthread_diameter = 4.8;\npitch = 1.25;\nhead_diameter = 10;\nhead_height = 2;\nshank_length = 20;\nshank_diameter = screw_diameter;\n\n// Thread generation\nthread_resolution = 0.2;\n\nmodule thread(height) {\n    for (i = [0:height/thread_resolution:height]) {\n        rotate([0,0,i*360/pitch]) {\n            translate([0,0, -i]) {\n                difference() {\n                    circle(r=thread_diameter/2);\n                    circle(r=thread_diameter/2 - 0.5);\n                }\n            }\n        }\n    }\n}\n\n// Main screw module\nmodule screw() {\n    // Screw shank\n    cylinder(h=shank_length, r=shank_diameter/2, center=false);\n\n    // Screw threads\n    translate([0, 0, shank_length]) {\n        thread(pitch);\n    }\n\n    // Screw head\n    translate([0, 0, shank_length + thread(pitch).height]) {\n        cylinder(h=head_height, r=head_diameter/2, center=false);\n    }\n}\n\nscrew();",
+    "previous_name": "screw",
+    "name": "pole"
+  },
+  {
+    "code": "// Bolt parameters\nbolt_head_diameter = 10;\nbolt_head_height = 3;\nbolt_shank_diameter = 4;\nbolt_shank_length = 20;\nbolt_thread_diameter = 3;\nbolt_thread_length = 15;\nbolt_thread_pitch = 1.75; // Standard metric thread pitch\n\nmodule bolt_head() {\n  difference() {\n    cylinder(h = bolt_head_height, d = bolt_head_diameter, center = true);\n    translate([0, 0, bolt_head_height/2])\n    cylinder(h = 1, d = bolt_head_diameter - 0.5, center = true);\n  }\n}\n\nmodule bolt_shank() {\n  cylinder(h = bolt_shank_length, d = bolt_shank_diameter, center = true);\n}\n\nmodule bolt_thread() {\n  for (i = [0:bolt_thread_length/bolt_thread_pitch]) {\n    rotate([0, 0, i * bolt_thread_pitch]) {\n      cylinder(h = 0.5, d = bolt_thread_diameter, center = true);\n    }\n  }\n}\n\nunion() {\n  translate([0, 0, bolt_head_height]) {\n    bolt_head();\n  }\n\n  translate([0, 0, bolt_head_height + bolt_shank_length/2]) {\n    bolt_shank();\n  }\n\n  translate([0, 0, bolt_head_height + bolt_shank_length + bolt_thread_length/2]) {\n    bolt_thread();\n  }\n}",
+    "previous_name": "bolt",
+    "name": "pegboard"
+  },
+  {
+    "code": "$fn = 64;\n\nmodule nut(height, major_diameter, minor_diameter, thread_angle = 60) {\n  difference() {\n    cylinder(h = height, d = major_diameter, center = true);\n    cylinder(h = height + 0.1, d = minor_diameter, center = true);\n    \n    for (i = [0:360]) {\n      rotate([0, 0, i]) {\n        translate([major_diameter/2, 0, 0]) {\n          rotate([90,0,0])\n          cone(h = height*1.1, r1 = minor_diameter/2, r2 = 0, center = true);\n        }\n      }\n    }\n  }\n}\n\nnut(height = 10, major_diameter = 20, minor_diameter = 16);",
+    "previous_name": "nut",
+    "name": "ring"
+  },
+  {
+    "code": "// Washer parameters\nouter_diameter = 50;\ninner_diameter = 20;\nthickness = 5;\n\n// Washer body\ndifference() {\n  cylinder(h = thickness, r = outer_diameter / 2, $fn = 100);\n  cylinder(h = thickness + 0.1, r = inner_diameter / 2, $fn = 100);\n}",
+    "previous_name": "washer",
+    "name": "donut"
+  },
+  {
+    "code": "// Spring parameters\nradius = 5;\nwire_radius = 1;\nheight = 20;\nturns = 10;\npitch = height / turns;\n\nmodule spring(radius, wire_radius, height, turns, pitch) {\n  for (i = [0:turns]) {\n    angle = i * 360 / turns;\n    translate([radius * cos(angle), radius * sin(angle), i * pitch])\n    cylinder(h = wire_radius, r = wire_radius, center = false);\n  }\n}\n\nspring(radius, wire_radius, height, turns, pitch);",
+    "previous_name": "spring",
+    "name": "spray paint"
+  },
+  {
+    "code": "// Coil parameters\nradius = 20;         // Radius of the coil\nwire_radius = 1;    // Radius of the wire\nturns = 10;          // Number of turns\nheight = 20;         // Height of the coil\nspacing = 1;          // Spacing between turns\n\n// Calculate the angle per turn\nangle_per_turn = 360 / turns;\n\nmodule coil_turn(turn_index, radius, wire_radius, angle_per_turn) {\n    rotate([0, 0, angle_per_turn * turn_index]) {\n        translate([radius, 0, 0]) {\n            cylinder(h = 2 * wire_radius, r = wire_radius, center = false, $fn = 64);\n        }\n    }\n}\n\nmodule coil(radius, wire_radius, turns, height, spacing) {\n    for (i = [0:turns-1]) {\n        translate([0, 0, i * (2 * wire_radius + spacing)]) {\n            coil_turn(i, radius, wire_radius, angle_per_turn);\n        }\n    }\n}\n\ncoil(radius, wire_radius, turns, height, spacing);",
+    "previous_name": "coil",
+    "name": "wire coil"
+  },
+  {
+    "code": "/*\nHelix generation in OpenSCAD.\n*/\n\nmodule helix(height, radius, turns, segments) {\n  linear_extrude(height = height, twist = turns * 360, slices = segments) {\n    circle(r = radius);\n  }\n}\n\n// Example usage:\nhelix(height = 50, radius = 10, turns = 5, segments = 100);",
+    "previous_name": "helix",
+    "name": "pillar"
+  },
+  {
+    "code": "// Cup parameters\ncup_height = 80;\ncup_radius = 30;\nwall_thickness = 3;\nbase_radius = 20;\nbase_height = 10;\nhandle_width = 10;\nhandle_height = 25;\nhandle_depth = 5;\n\n// Cup body\ndifference() {\n  cylinder(h = cup_height, r = cup_radius, $fn = 50);\n  cylinder(h = cup_height - wall_thickness, r = cup_radius - wall_thickness, $fn = 50);\n}\n\n// Base\ntranslate([0, 0, -base_height]) {\n  cylinder(h = base_height, r = base_radius, $fn = 50);\n}\n\n// Handle\ntranslate([cup_radius/2 + handle_width/2, 0, cup_height/2 - handle_height/2]) {\n  rotate([0, 0, 90])\n  cube([handle_width, handle_depth, handle_height], center = true);\n}",
+    "previous_name": "cup",
+    "name": "light bulb"
+  },
+  {
+    "code": "// Mug parameters\nmug_height = 100;\nmug_diameter = 80;\nhandle_width = 15;\nhandle_height = 10;\nhandle_depth = 10;\nhandle_offset = 15;\nwall_thickness = 2;\nbase_diameter = mug_diameter - 2*wall_thickness;\nbase_height = 2;\n\n\nmodule mug() {\n  difference() {\n    cylinder(h = mug_height, d = mug_diameter, center = false);\n    cylinder(h = mug_height - base_height, d = base_diameter, center = false);\n  }\n}\n\nmodule handle() {\n  translate([handle_offset, 0, mug_height/2]) {\n    cube([handle_width, handle_depth, handle_height]);\n  }\n}\n\nmodule mug_with_handle() {\n  union() {\n    mug();\n    handle();\n  }\n}\n\n\n// Render the mug\nmug_with_handle();",
+    "previous_name": "mug",
+    "name": "candle"
+  },
+  {
+    "code": "$fn = 60;\n\nr = 50;\nh = 30;\n\ndifference() {\n  cylinder(h = h, r = r, $fn = $fn);\n  translate([0, 0, -1])\n  cylinder(h = h + 2, r = r - 15, $fn = $fn);\n}",
+    "previous_name": "bowl",
+    "name": "ring"
+  },
+  {
+    "code": "module plate(width, depth, thickness) {\n  cube([width, depth, thickness]);\n}\n\nplate(100, 50, 2);",
+    "previous_name": "plate",
+    "name": "plain"
+  },
+  {
+    "code": "// Spoon parameters\nspoon_length = 120;\nbowl_width = 50;\nbowl_depth = 20;\nhandle_width = 20;\nhandle_thickness = 3;\nbowl_roundness = 15;\n\ndifference() {\n  union() {\n    // Bowl\n    rotate([0, 0, -20]) {\n      translate([0, 0, -bowl_depth/2]) {\n        cylinder(h = bowl_depth, r1 = bowl_width/2, r2 = bowl_width/2 + bowl_roundness, $fn = 100);\n      }\n    }\n\n    // Handle\n    translate([0, 0, -handle_thickness]) {\n      cube([spoon_length - bowl_width, handle_width, handle_thickness]);\n    }\n\n    translate([spoon_length - bowl_width, 0, 0]) {\n       translate([0, 0, -handle_thickness]){\n          cube([bowl_width, handle_width, handle_thickness]);\n       }\n    }\n  }\n\n  // Remove material for spoon shape\n  translate([0, 0, -bowl_depth/2]) {\n    cylinder(h = bowl_depth, r = bowl_width/2 - 5, $fn = 100);\n  }\n\n  translate([bowl_width, 0, 0]) {\n    translate([0, 0, -handle_thickness]){\n        cube([bowl_width + 5, handle_width + 5, handle_thickness + 5]);\n    }\n  }\n}",
+    "previous_name": "spoon",
+    "name": "cone"
+  },
+  {
+    "code": "$fn = 50;\n\nhandle_length = 80;\nhandle_diameter = 6;\nbowl_length = 25;\nbowl_width = 25;\nbowl_height = 8;\nbowl_offset = 5;\ntine_length = 20;\ntine_width = 2;\ntine_spacing = 4;\n\nmodule handle() {\n    cylinder(h = handle_length, d = handle_diameter);\n}\n\nmodule bowl() {\n    translate([0, 0, handle_length - bowl_offset])\n    difference() {\n        cube([bowl_width, bowl_width, bowl_height]);\n        translate([tine_spacing, tine_spacing, 0])\n        cube([bowl_width - 2 * tine_spacing, bowl_width - 2 * tine_spacing, bowl_height]);\n    }\n}\n\nmodule tines() {\n    for (i = [0 : 3]) {\n        translate([bowl_width / 2 - bowl_width / 4 + i * (bowl_width / 3), 0, bowl_height])\n        rotate([90, 0, 0])\n        cube([tine_width, tine_length, 1]);\n    }\n}\n\nunion() {\n    handle();\n    bowl();\n    tines();\n}",
+    "previous_name": "fork",
+    "name": "tine"
+  },
+  {
+    "code": "// Knife Design - Basic\n\n$fn = 50;\n\nmodule blade(length, width, thickness, bevel_angle) {\n    difference() {\n        cube([length, width, thickness]);\n        translate([length - (length * tan(bevel_angle)), 0, 0])\n        rotate([0,90,0])\n        cylinder(h=width, r1=width/2, r2=width/2 - (width/2 * tan(bevel_angle)), center=true, $fn=50);\n    }\n}\n\nmodule handle(length, width, thickness) {\n    cube([length, width, thickness]);\n}\n\n// Parameters\nblade_length = 80;\nblade_width = 20;\nblade_thickness = 3;\nbevel_angle = 15;\n\nhandle_length = 120;\nhandle_width = 15;\nhandle_thickness = 20;\n\n// Assembly\nblade_translate_z = -blade_thickness;\nhandle_translate_z = blade_length + blade_translate_z;\ntranslate([0,0,blade_translate_z])\nblade(blade_length, blade_width, blade_thickness, bevel_angle);\n\ntranslate([blade_length, 0, handle_translate_z])\nhandle(handle_length, handle_width, handle_thickness);",
+    "previous_name": "knife",
+    "name": "stake"
+  },
+  {
+    "code": "// Bottle parameters\nbottle_height = 100;\nbottle_diameter = 50;\nneck_height = 30;\nneck_diameter = 20;\nwall_thickness = 3;\nbase_diameter = 30;\n\n// Bottom Cone\ndifference() {\n  cylinder(h = 10, r = bottle_diameter/2, center = true);\n  translate([0,0,-5]) cone(h=10, r1=bottle_diameter/2, r2=base_diameter/2, center = true);\n}\n\n\n// Main Body\ndifference() {\n  cylinder(h = bottle_height - neck_height, r = bottle_diameter/2, center = true);\n  cylinder(h = bottle_height - neck_height, r = bottle_diameter/2 - wall_thickness, center = true);\n}\n\n// Neck\ntranslate([0,0,bottle_height - neck_height])\ncylinder(h = neck_height, r = neck_diameter/2, center = true);",
+    "previous_name": "bottle",
+    "name": "bottle"
+  },
+  {
+    "code": "// Parameters\njar_height = 50;\njar_diameter = 40;\nwall_thickness = 2;\nbottom_thickness = 2;\nlid_height = 10;\nlid_diameter = jar_diameter + 5;\nlid_wall_thickness = 1.5;\n\n// Jar Body\nmodule jar_body() {\n  cylinder(h = jar_height, d = jar_diameter, center = false);\n}\n\n// Jar Bottom\nmodule jar_bottom() {\n  difference() {\n    cylinder(h = bottom_thickness, d = jar_diameter, center = false);\n    translate([0, 0, -0.1])\n    cylinder(h = bottom_thickness + 0.2, d = jar_diameter - wall_thickness * 2, center = false);\n  }\n}\n\n// Jar Lid\nmodule jar_lid() {\n  difference() {\n    cylinder(h = lid_height, d = lid_diameter, center = false);\n    translate([0, 0, -0.1])\n    cylinder(h = lid_height + 0.2, d = lid_diameter - lid_wall_thickness * 2, center = false);\n  }\n}\n\n// Jar Assembly\nunion() {\n  jar_body();\n  translate([0, 0, jar_height])\n  jar_bottom();\n}\n\ntranslate([0,0, jar_height + jar_body()])\njar_lid();",
+    "previous_name": "jar",
+    "name": "vase"
+  },
+  {
+    "code": "// Container dimensions\ncontainer_width = 100;\ncontainer_depth = 80;\ncontainer_height = 50;\nwall_thickness = 2;\nbase_thickness = 3;\n\n// Container body\nmodule container_body() {\n  cube([container_width, container_depth, container_height]);\n}\n\n// Cut out the interior\nmodule interior_cutout() {\n  translate([wall_thickness, wall_thickness, wall_thickness]) {\n    cube([container_width - 2 * wall_thickness, container_depth - 2 * wall_thickness, container_height - wall_thickness]);\n  }\n}\n\n// Base cut out\nmodule base_cutout() {\n  translate([wall_thickness, wall_thickness, 0]) {\n    cube([container_width - 2 * wall_thickness, container_depth - 2 * wall_thickness, base_thickness]);\n  }\n}\n\ndifference() {\n  container_body();\n  interior_cutout();\n  base_cutout();\n}",
+    "previous_name": "container",
+    "name": "box"
+  },
+  {
+    "code": "module lid(width, depth, height, wall_thickness, lip_height) {\n  difference() {\n    cube([width, depth, height]);\n    translate([wall_thickness, wall_thickness, 0])\n    cube([width - 2*wall_thickness, depth - 2*wall_thickness, height - lip_height]);\n  }\n}\n\nlid(100, 50, 10, 3, 1);",
+    "previous_name": "lid",
+    "name": "matte laptop"
+  },
+  {
+    "code": "$fn = 64;\n\nmodule cap(radius, height, wall_thickness) {\n  difference() {\n    cylinder(h = height, r = radius);\n    cylinder(h = height + 0.1, r = radius - wall_thickness);\n  }\n}\n\ncap(radius = 20, height = 10, wall_thickness = 2);",
+    "previous_name": "cap",
+    "name": "ring"
+  },
+  {
+    "code": "// Stopper Parameters\nstopper_diameter = 20;\nstopper_height = 5;\nhole_diameter = 5;\nwall_thickness = 1.5;\n\n// Main Stopper Body\ndifference() {\n  cylinder(h = stopper_height, r = stopper_diameter/2, center = true);\n  cylinder(h = stopper_height + 1, r = (stopper_diameter/2) - wall_thickness, center = true);\n}\n\n// Optional Hole\n//translate([0,0,-1])\n//cylinder(h = stopper_height+2, r = hole_diameter/2, center = true);",
+    "previous_name": "stopper",
+    "name": "ring"
+  },
+  {
+    "code": "difference() {\n  union() {\n    cylinder(h = 20, r1 = 25, center = true, $fn = 200);\n    cylinder(h = 20, r1 = 20, center = true, $fn = 200);\n  }\n  translate([0, 0, -1])\n  cylinder(h = 17, r1 = 14, center = true, $fn = 200);\n}",
+    "previous_name": "cork",
+    "name": "water drop"
+  },
+  {
+    "code": "$fn = 60;\n\nwheel_radius = 50;\nwheel_thickness = 15;\nspoke_count = 5;\nspoke_width = 3;\nspoke_length = wheel_radius * 0.6;\nhole_radius = 8;\n\ndifference() {\n  cylinder(h = wheel_thickness, r = wheel_radius, center = true);\n  for (i = [0:spoke_count-1]) {\n    rotate([0, 0, 360 / spoke_count * i]) {\n      translate([wheel_radius - spoke_width, 0, 0]) {\n        cube([spoke_width, wheel_thickness, spoke_length], center = true);\n      }\n    }\n  }\n  cylinder(h = wheel_thickness + 1, r = hole_radius, center = true);\n}",
+    "previous_name": "wheel",
+    "name": "tire"
+  },
+  {
+    "code": "module axle(diameter, length, fillet_radius) {\n  difference() {\n    cylinder(h = length, d = diameter, center = false);\n    cylinder(h = length + 2, d = diameter - 2*fillet_radius, center = false);\n    translate([0,0,-1])\n      cylinder(h = 2, d = diameter - 2*fillet_radius, center = false);\n  }\n}\n\naxle(diameter = 10, length = 30, fillet_radius = 1.5);",
+    "previous_name": "axle",
+    "name": "pole"
+  },
+  {
+    "code": "// Bearing parameters\ninner_diameter = 10;\nouter_diameter = 25;\nbearing_width = 8;\nball_diameter = 6;\nnum_balls = 12;\n\n// Tolerance (adjust as needed)\ntolerance = 0.2;\n\n// Inner race\nmodule inner_race(diameter, width) {\n  cylinder(h = width, r = diameter / 2, center = true);\n}\n\n// Outer race\nmodule outer_race(diameter, width) {\n  cylinder(h = width, r = diameter / 2, center = true);\n}\n\n// Ball\nmodule ball(diameter) {\n  sphere(r = diameter / 2);\n}\n\n// Bearing assembly\ndifference() {\n  union() {\n    translate([0, 0, -bearing_width / 2]) {\n      inner_race(inner_diameter, bearing_width);\n    }\n    translate([0, 0, bearing_width / 2]) {\n      outer_race(outer_diameter, bearing_width);\n    }\n  }\n  \n  // Create holes for balls\n  for (i = [0:num_balls-1]) {\n    angle = i * 360 / num_balls;\n    x = (inner_diameter / 2 + ball_diameter / 2 + tolerance) * cos(angle);\n    y = (inner_diameter / 2 + ball_diameter / 2 + tolerance) * sin(angle);\n    \n    translate([x, y, 0]) {\n      cylinder(h = bearing_width + 1, r = ball_diameter / 2, center = true, $fn=32);\n    }\n  }\n}",
+    "previous_name": "bearing",
+    "name": "vitamin pill"
+  },
+  {
+    "code": "// Pulley Parameters\nradius = 20;\ngroove_radius = 18;\ngroove_depth = 5;\ngroove_width = 10;\nthickness = 15;\nhole_diameter = 5;\nhole_offset = 10;\n\n// Main Body\ndifference() {\n    cylinder(h = thickness, r = radius, $fn = 100);\n    \n    // Groove\n    for (i = [0:5]) {\n        rotate([0, 0, i * 36]) {\n            translate([0, 0, -1]) {\n                cylinder(h = thickness + 2, r = groove_radius, $fn = 100);\n            }\n        }\n    }\n\n    // Hole\n    translate([hole_offset, 0, thickness / 2]) {\n        cylinder(h = thickness, r = hole_diameter / 2, $fn = 100);\n    }\n    translate([-hole_offset, 0, thickness / 2]) {\n        cylinder(h = thickness, r = hole_diameter / 2, $fn = 100);\n    }\n}",
+    "previous_name": "pulley",
+    "name": "wedding band"
+  }
+]

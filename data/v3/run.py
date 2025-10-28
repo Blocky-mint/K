@@ -27,7 +27,7 @@ from io import BytesIO
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llava:7b"  # Vision-capable model for image labeling
 RENDER_TIMEOUT = 30
-MAX_SAMPLES = 3  # Test with 3 samples first
+MAX_SAMPLES = None  # Process entire dataset (26,480 entries)
 
 def call_ollama(prompt):
     """Call Ollama API to generate object labels"""
@@ -230,9 +230,9 @@ Respond with only the name (under 5 words), no explanations."""
     if label:
         # Clean up the response - remove quotes, extra text
         label = label.strip().strip('"').strip("'")
-        # Take only first 5 words
+        # Take only first 5 words and convert to lowercase
         words = label.split()[:5]
-        return ' '.join(words)
+        return ' '.join(words).lower()
     
     return None
 
@@ -306,10 +306,12 @@ def main():
     dataset = load_dataset("ThomasTheMaker/Synthetic-Object-v0", split="train")
     print(f"✓ Loaded {len(dataset)} entries")
     
-    # Limit samples for testing
+    # Limit samples for testing (if specified)
     if MAX_SAMPLES:
         dataset = dataset.select(range(min(MAX_SAMPLES, len(dataset))))
         print(f"✓ Limited to {len(dataset)} samples for testing")
+    else:
+        print(f"✓ Processing entire dataset: {len(dataset)} entries")
     
     # Setup output file
     output_file = "labeled_openscad_dataset.json"
@@ -327,6 +329,7 @@ def main():
     # Process entries
     successful_count = start_index
     failed_count = 0
+    start_time = time.time()
     
     print(f"\nProcessing {len(dataset)} entries...")
     print("-" * 80)
@@ -348,10 +351,19 @@ def main():
         
         # Progress update
         processed = i + 1 - start_index
-        if processed > 0 and processed % 10 == 0:
-            print(f"\nProgress: {processed} new entries processed, {successful_count} total successful, {failed_count} failed")
+        if processed > 0 and processed % 100 == 0:
+            elapsed_time = time.time() - start_time
+            avg_time_per_entry = elapsed_time / processed
+            remaining_entries = len(dataset) - i - 1
+            estimated_remaining_time = remaining_entries * avg_time_per_entry
+            
+            print(f"\n📊 Progress: {processed} new entries processed, {successful_count} total successful, {failed_count} failed")
+            print(f"   Overall progress: {i+1}/{len(dataset)} ({((i+1)/len(dataset))*100:.1f}%)")
+            print(f"   Elapsed: {elapsed_time/60:.1f}min | Est. remaining: {estimated_remaining_time/60:.1f}min")
+            print("-" * 60)
     
     # Final summary
+    total_time = time.time() - start_time
     print(f"\n{'='*80}")
     print("PROCESSING COMPLETE")
     print(f"{'='*80}")
@@ -359,6 +371,8 @@ def main():
     final_entries = load_existing_entries(output_file)
     print(f"✓ Total entries in {output_file}: {len(final_entries)}")
     print(f"✓ Success rate: {successful_count}/{len(dataset)} ({successful_count/len(dataset)*100:.1f}%)")
+    print(f"✓ Total time: {total_time/60:.1f} minutes")
+    print(f"✓ Average time per entry: {total_time/len(dataset):.2f} seconds")
     
     # Show some examples
     if final_entries:
