@@ -4,12 +4,12 @@
   "date": "2025-10-29",
   "time": "02:52:02",
   "total_tests": 282,
-  "completed_tests": 73,
-  "code_extraction_success": 73,
+  "completed_tests": 107,
+  "code_extraction_success": 107,
   "code_extraction_rate": "100.0%",
-  "render_success": 57,
-  "render_success_rate": "78.1%",
-  "average_tokens_generated": "53",
+  "render_success": 88,
+  "render_success_rate": "82.2%",
+  "average_tokens_generated": "54",
   "results": [
     {
       "object": "cube",
@@ -665,6 +665,312 @@
       "render_success": true,
       "tokens_generated": 49,
       "code": "// Fish Model in OpenSCAD\n\n// Parameters\nfish_length = 50;\nfish_width = 30;\nfish_height = 15;\nfin_length = 15;\nfin_width = 5;\neye_radius = 2;\nmouth_width = 8;\nmouth_height = 2;\n\nmodule fish() {\n  difference() {\n    union() {\n      // Body\n      translate([0, 0, 0])\n      cube([fish_length, fish_width, fish_height]);\n\n      // Top Fin\n      translate([fish_length / 4, -fish_width / 2 - fin_width / 2, fish_height / 2])\n      rotate([0, 0, 45])\n      cube([fin_length, fin_width, 1]);\n\n      // Bottom Fin\n      translate([fish_length / 4, fish_width / 2 + fin_width / 2, fish_height / 2])\n      rotate([0, 0, -45])\n      cube([fin_length, fin_width, 1]);\n    }\n\n    // Mouth\n    translate([fish_length / 2, -fish_width / 2 + mouth_width / 2, fish_height / 2])\n    cube([mouth_width, mouth_height, 1]);\n  }\n}\n\nfish();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "arch",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 91,
+      "code": "// Arch parameters\narch_width = 50;\narch_height = 80;\narch_depth = 30;\ncurve_radius = 25;\ncurve_segments = 32;\n\nmodule arch() {\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n  \n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude(height = arch_depth) {\n    polygon([\n      [0, 0],\n      [arch_width, 0],\n      [arch_width, arch_height],\n      [0, arch_height]\n    ]);\n  }\n\n  linear_extrude",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmpqc852flg/arch.scad, line 586\nCan't parse file '/tmp/tmpqc852flg/arch.scad'!\n\n"
+    },
+    {
+      "object": "dome",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 64,
+      "code": "module dome(radius, height, segments) {\n  rotate_extrude(angle = 180)\n  translate([radius, 0, 0])\n  circle(r = radius);\n}\n\ndome(radius = 20, height = 15, segments = 32);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cube tower",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 8,
+      "code": "module cube_tower(height, width, depth, rounds = 0) {\n  difference() {\n    cube([width, depth, height]);\n    for (i = [0:3]) {\n      translate([i * (width + depth) / 3, 0, 0]) {\n        cylinder(r = rounds, h = height, $fn = 32);\n      }\n    }\n  }\n}\n\ncube_tower(height = 50, width = 50, depth = 50, rounds = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "pyramid tower",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 62,
+      "code": "module pyramid(height, base_width, base_depth, base_height, tip_radius) {\n  linear_extrude(height = height) {\n    polygon([\n      [0, 0],\n      [base_width, 0],\n      [base_width, base_height],\n      [0, base_height]\n    ]);\n  }\n  translate([0, 0, height]) {\n    difference() {\n      linear_extrude(height = height) {\n        polygon([\n          [0, 0],\n          [base_width, 0],\n          [base_width, base_height],\n          [0, base_height]\n        ]);\n      }\n      translate([0,0,0])\n        cylinder(h=height, r=tip_radius);\n    }\n  }\n}\n\npyramid(height = 50, base_width = 40, base_depth = 30, base_height = 10, tip_radius = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "wall block",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 12,
+      "code": "module wall_block(width, height, depth, fillet_radius) {\n  difference() {\n    cube([width, height, depth]);\n    translate([fillet_radius, fillet_radius, 0])\n    cube([width - 2 * fillet_radius, height - 2 * fillet_radius, depth]);\n  }\n}\n\nwall_block(width = 100, height = 50, depth = 100, fillet_radius = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "brick",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 13,
+      "code": "module brick(length, width, height, fillet_radius) {\n  difference() {\n    cube([length, width, height]);\n    translate([fillet_radius, fillet_radius, fillet_radius])\n    cube([length - 2*fillet_radius, width - 2*fillet_radius, height - 2*fillet_radius]);\n  }\n}\n\nbrick(20, 10, 5, 1);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "corner piece",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 76,
+      "code": "module corner_piece(width, depth, height, radius) {\n  difference() {\n    cube([width, depth, height]);\n    translate([radius, radius, height/2])\n    cylinder(r=radius, h=height, $fn=32);\n    translate([width - radius, radius, height/2])\n    cylinder(r=radius, h=height, $fn=32);\n    translate([radius, depth - radius, height/2])\n    cylinder(r=radius, h=height, $fn=32);\n    translate([width - radius, depth - radius, height/2])\n    cylinder(r=radius, h=height, $fn=32);\n  }\n}\n\ncorner_piece(width = 50, depth = 30, height = 20, radius = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "blob",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 10,
+      "code": "module blob(radius, height, segments) {\n  sphere(r = radius);\n}\n\nblob(radius = 10, height = 5, segments = 64);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "random shape",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 86,
+      "code": "// Random Shape Generator\n\nmodule random_shape(size = 50) {\n  \n  // Define parameters for shape generation\n  random_radius = random(size * 0.3);\n  random_height = random(size * 0.6);\n  random_angle = random(size * 0.3);\n\n  difference() {\n    hull() {\n      translate([random_radius, 0, random_height / 2]) sphere(r = random_radius);\n      translate([-random_radius, 0, random_height / 2]) sphere(r = random_radius);\n      translate([random_radius, random_height, random_height / 2]) sphere(r = random_radius);\n      translate([-random_radius, random_height, random_height / 2]) sphere(r = random_radius);\n    }\n    \n    // Cut out a central hole\n    translate([random_radius * 1.2, random_height * 1.2, random_height * 0.8]) {\n        cube([random_radius * 2, random_height * 2, random_height * 2], center = true);\n    }\n  }\n}\n\nrandom_shape();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "organic form",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 80,
+      "code": "// Parameters for organic form generation\nresolution = 32;\nscale_factor = 0.7;\ndetail_level = 4;\n\ndifference() {\n  // Base Cylinder\n  cylinder(h = 10, r = 10, $fn = resolution);\n\n  // Detail points - simplified for demonstration\n  for (i = [0:detail_level:resolution]) {\n    for (j = [0:detail_level:resolution]) {\n      translate([i * scale_factor, j * scale_factor, 0]) {\n        sphere(r = 2.5 * scale_factor, $fn = detail_level);\n      }\n    }\n  }\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "bumpy sphere",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 50,
+      "code": "// Parameters for the sphere\nradius = 10;\nheight = 5;\nnum_bumps = 10;\nbump_height = 2;\n\nmodule bump(r) {\n  translate([r, 0, 0])\n  {\n    rotate([0, 0, 30])\n    {\n      linear_extrude(height = bump_height, convexity = 10)\n      {\n        polygon(points=[\n          [0, 0],\n          [radius * cos(30), radius * sin(30)],\n          [radius * cos(30), radius * sin(30)]\n        ]);\n      }\n    }\n  }\n}\n\ndifference() {\n  cylinder(h = height, r = radius, center = false);\n  for (i = [0:num_bumps - 1]) {\n    bump(radius - height / 2 + i * height / num_bumps);\n  }\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "wrinkled cube",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 39,
+      "code": "module wrinkled_cube(size, wrinkle_depth, wrinkle_width, num_wrinkles) {\n  difference() {\n    cube([size, size, size]);\n\n    for (i = [0:num_wrinkles - 1]) {\n      translate([0, 0, 0]) {\n        if (i % 2 == 0) {\n          rotate([0,0,30])\n          translate([size * 0.75, 0, size * 0.75])\n          cube([size * 0.75, size * 0.75, size * 0.75]);\n        } else {\n          rotate([-30,0,0])\n          translate([size * 0.75, 0, size * 0.75])\n          cube([size * 0.75, size * 0.75, size * 0.75]);\n        }\n      }\n  }\n}\n\nwrinkled_cube(size = 50, wrinkle_depth = 10, wrinkle_width = 10, num_wrinkles = 2);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmpbu_js8g9/wrinkled cube.scad, line 22\nCan't parse file '/tmp/tmpbu_js8g9/wrinkled cube.scad'!\n\n"
+    },
+    {
+      "object": "twisted cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 15,
+      "code": "module twisted_cylinder(height, radius_top, radius_bottom, twist_angle) {\n  difference() {\n    cylinder(h = height, r = radius_bottom);\n    rotate([0,0,twist_angle])\n    translate([0,0,height - height/2])\n    cylinder(h = height, r = radius_top);\n  }\n}\n\ntwisted_cylinder(height = 20, radius_top = 5, radius_bottom = 3, twist_angle = 15);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "bolt",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 47,
+      "code": "// Bolt Parameters\nhead_diameter = 10;\nhead_height = 2;\nshank_diameter = 20;\nshank_height = 25;\nthread_diameter = 8;\nthread_height = 15;\nthread_pitch = 1.25;\n\nmodule bolt() {\n  difference() {\n    union() {\n      // Head\n      cylinder(h = head_height, d = head_diameter);\n\n      // Shank\n      cylinder(h = shank_height, d = shank_diameter);\n\n      // Threaded Hole\n      translate([0, 0, shank_height]) {\n        cylinder(h = thread_height, d = thread_diameter);\n      }\n    }\n    \n    //Thread\n    translate([0, 0, shank_height]) {\n      for(i = [0:thread_pitch:thread_pitch/5]) {\n        rotate([0,0,i*360/thread_pitch]) {\n          translate([shank_diameter/2, 0, 0])\n          rotate([90,0,0])\n          linear_extrude(height = thread_height)\n          polygon(points=[[0,0], [thread_diameter/2, thread_pitch], [0, thread_pitch]]);\n        }\n      }\n    }\n  }\n}\n\nbolt();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "screw",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 91,
+      "code": "// Screw Parameters\nhead_diameter = 10;\nhead_height = 2;\nshank_diameter = 3;\nshank_height = 15;\nthread_diameter = 3.5;\nthread_pitch = 1.25;\ntotal_length = 30;\n\n// Thread Parameters\nthread_height = 1;\nthread_depth = 0.5;\nthread_angle = 15; // degrees\n\nmodule screw_head() {\n  difference() {\n    cylinder(h = head_height, r = head_diameter / 2, center = true);\n    translate([0, 0, head_height / 2]) cylinder(h = head_height, r = head_diameter / 2, center = true);\n  }\n}\n\nmodule screw_shank() {\n  difference() {\n    cylinder(h = shank_height, r = shank_diameter / 2, center = true);\n    translate([0, 0, shank_height / 2]) cylinder(h = shank_height / 2, r = shank_diameter / 2 + 0.1, center = true);\n  }\n}\n\nmodule screw() {\n  screw_shank();\n  translate([0, 0, -thread_height]) screw_head();\n}\n\nmodule thread() {\n    for (i = [0:5]) {\n        rotate([0,0,i*36])\n        translate([0,0,-thread_depth*i])\n        cylinder(h = thread_pitch, r = thread_diameter / 2, center = false);\n    }\n}\n\nmodule assembled_screw() {\n  difference() {\n    union() {\n      screw();\n      for (i = [0:5]) {\n        rotate([0,0,i*36])\n        translate([0,0,-thread_depth*i])\n        thread();\n      }\n    }\n  }\n}\n\nmodule assembled_screw_with_head() {\n  difference() {\n    union() {\n      translate([0, 0, -head_height/2]) screw_head();\n      translate([0, 0, head_height/2 + thread_height]) screw_shank();\n    }\n  }\n}\n\n\nassembled_screw();\nassembled_screw_with_head();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "nut",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 43,
+      "code": "// Nut Parameters\nouter_diameter = 20;\ninner_diameter = 16;\nheight = 5;\nthread_height = 2;\nthread_depth = 0.5;\nnum_threads = 4;\n\n// Calculate thread depth based on threads\nthread_depth = (thread_height + height) / num_threads;\n\nmodule nut() {\n    difference() {\n        cylinder(h = height, r = outer_diameter / 2, center = false);\n        cylinder(h = height - thread_height, r = inner_diameter / 2, center = false);\n    }\n\n    for (i = [0:num_threads-1]) {\n        rotate([0, 0, i * 360 / num_threads]) {\n            translate([0, 0, -height/2]) {\n                linear_extrude(height = height/2, convexity = 10) {\n                    polygon(points = [\n                        [outer_diameter/2, 0],\n                        [outer_diameter/2 - thread_depth, thread_depth],\n                        [outer_diameter/2 - thread_depth, -thread_depth],\n                        [outer_diameter/2, -thread_depth]\n                    ]);\n                }\n            }\n        }\n    }\n}\n\nnut();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "spring",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 88,
+      "code": "// Spring parameters\nradius = 10;\nheight = 20;\nwire_thickness = 2;\nnumber_of_coils = 10;\ncoil_angle = 360 / number_of_coils;\n\nmodule spring(radius, height, wire_thickness, number_of_coils, coil_angle) {\n  for (i = [0:number_of_coils - 1]) {\n    rotate([0, 0, i * coil_angle]) {\n      translate([radius, 0, height / number_of_coils * i]) {\n        linear_extrude(height = height / number_of_coils) {\n          polygon(points = [[0, 0], [radius, 0], [radius * (1 - (i / number_of_coils) * cos(coil_angle) * 2), radius * (1 - (i / number_of_coils) * sin(coil_angle) * 2)]]);\n        }\n      }\n    }\n  }\n}\n\nspring(radius, height, wire_thickness, number_of_coils, coil_angle);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "pulley",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 60,
+      "code": "// Pulley parameters\nradius = 20;\ninner_radius = 10;\nthickness = 5;\ngroove_depth = 2;\ngroove_width = 4;\nnum_grooves = 2;\n\ndifference() {\n  // Outer cylinder\n  cylinder(h = thickness, r = radius, $fn = 100);\n\n  // Inner cylinder\n  translate([0, 0, -groove_depth])\n    cylinder(h = thickness + groove_depth * 2, r = inner_radius, $fn = 100);\n\n  for (i = [0:num_grooves - 1]) {\n    rotate([0, 0, i * 360 / num_grooves]) {\n      translate([inner_radius, 0, 0]) {\n        cylinder(h = thickness, r = inner_radius - groove_width / 2, $fn = 100);\n      }\n    }\n  }\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "wheel",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 84,
+      "code": "// Wheel parameters\nradius = 50;\nthickness = 10;\nnum_spokes = 6;\nspoke_width = 5;\nhole_radius = 3;\n\ndifference() {\n  cylinder(h = thickness, r = radius, $fn = 100);\n  for (i = [0:num_spokes - 1]) {\n    rotate([0, 0, i * 360 / num_spokes]) {\n      translate([radius - spoke_width, 0, 0]) {\n        cube([spoke_width, radius, thickness], center = true);\n      }\n    }\n  }\n  cylinder(h = thickness + 0.1, r = hole_radius, $fn = 100);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "axle",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 78,
+      "code": "module axle(length, diameter, fillet_radius) {\n  difference() {\n    cylinder(h = length, d = diameter, center = false);\n    cylinder(h = length, d = diameter - 2 * fillet_radius, center = false);\n  }\n}\n\naxle(length = 50, diameter = 10, fillet_radius = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "shaft",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 91,
+      "code": "// Shaft parameters\nshaft_diameter = 10;\nshaft_length = 50;\nwall_thickness = 1.5;\n\n// Create the shaft\ndifference() {\n  cylinder(h = shaft_length, d = shaft_diameter, $fn = 60);\n  cylinder(h = shaft_length, d = shaft_diameter - 2 * wall_thickness, center = true, $fn = 60);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "pipe",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 74,
+      "code": "module pipe(radius, height, segments=64) {\n  difference() {\n    cylinder(h=height, r=radius, $fn=segments);\n    cylinder(h=height, r=radius - 0.1, $fn=segments); // Subtract a small amount to create a hollow pipe\n  }\n}\n\npipe(radius=10, height=20);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "tube",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 56,
+      "code": "module tube(r, h, segments) {\n  linear_extrude(height = h, convexity = 10, slices = segments)\n    circle(r);\n}\n\ntube(r = 1, h = 2, segments = 60);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "channel",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 38,
+      "code": "module channel(width, height, depth, fillet_radius) {\n  difference() {\n    cube([width, height, depth]);\n    translate([fillet_radius, fillet_radius, 0])\n    cube([width - 2 * fillet_radius, height - 2 * fillet_radius, depth]);\n  }\n}\n\nchannel(width = 50, height = 30, depth = 10, fillet_radius = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "profile",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 1,
+      "code": "module profile(width, height, depth, angle = 45, resolution = 32) {\n  difference() {\n    cube([width, height, depth]);\n    for (i = [0:resolution]) {\n      rotate([i * 360 / resolution, 0, 0]) {\n        translate([width * cos(i * 360 / resolution) - width * cos(i * 360 / resolution) * cos(angle),\n                 height * sin(i * 360 / resolution) - height * sin(i * 360 / resolution) * sin(angle),\n                 depth * sin(i * 360 / resolution) - depth * sin(i * 360 / resolution) * sin(angle)]) {\n          linear_extrude(height = 1) {\n            polygon([[cos(i * 360 / resolution) * width * cos(angle),\n                         sin(i * 360 / resolution) * width * sin(angle),\n                         cos(i * 360 / resolution) * width * cos(angle)]);\n          }\n        }\n      }\n    }\n  }\n}\n\nprofile(width = 50, height = 25, depth = 10, angle = 45, resolution = 64);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmpchgw_jt8/profile.scad, line 12\nCan't parse file '/tmp/tmpchgw_jt8/profile.scad'!\n\n"
+    },
+    {
+      "object": "angle iron",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 53,
+      "code": "module angle_iron(length, diameter, thickness, angle_degrees) {\n  difference() {\n    cylinder(h=length, d=diameter, $fn=64);\n    translate([0,0,-1])\n      rotate([0,0,angle_degrees])\n        cylinder(h=length+2, d=diameter-thickness, $fn=64);\n  }\n}\n\nangle_iron(length=100, diameter=10, thickness=2, angle_degrees=30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "T-beam",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 16,
+      "code": "module t_beam(width, height, length, fillet_radius) {\n  difference() {\n    cube([length, width, height]);\n    translate([length - fillet_radius, 0, 0])\n      cylinder(h = height, r = fillet_radius);\n    translate([0, width - fillet_radius, 0])\n      cylinder(h = height, r = fillet_radius);\n  }\n}\n\nt_beam(width = 50, height = 100, length = 100, fillet_radius = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "I-beam",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 70,
+      "code": "module i_beam(length, width, height, fillet_radius) {\n  difference() {\n    cube([length, width, height]);\n    translate([length - 2, 0, 0])\n    cube([2, width, height]);\n    translate([0, 0, -1])\n    rotate([0, 0, 45])\n    cylinder(r=fillet_radius, h=height, $fn=50);\n\n    translate([0, 0, -1])\n    rotate([0, 0, 45])\n    cylinder(r=fillet_radius, h=height, $fn=50);\n  }\n}\n\ni_beam(length=50, width=10, height=5, fillet_radius=1.5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "L-profile",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 73,
+      "code": "module lprofile(width, height, depth, angle) {\n  linear_extrude(height = depth) {\n    polygon([\n      [0, 0],\n      [width / 2, height * tan(angle)],\n      [width, height * tan(angle)]\n    ]);\n  }\n}\n\n// Example usage:\nlprofile(width = 50, height = 30, depth = 10, angle = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "box without lid",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 93,
+      "code": "module box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\nbox(10, 20, 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "container with lid",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 67,
+      "code": "// Container parameters\ncontainer_width = 100;\ncontainer_depth = 50;\ncontainer_height = 20;\nlid_width = 150;\nlid_depth = 10;\nlid_height = 5;\n\nmodule container() {\n  cube([container_width, container_depth, container_height]);\n}\n\nmodule lid() {\n  cube([lid_width, lid_depth, lid_height]);\n}\n\ndifference() {\n  container();\n  translate([container_width + lid_width, 0, 0]) {\n    lid();\n  }\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "open box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 53,
+      "code": "module open_box(width, height, depth) {\n  cube([width, height, depth]);\n}\n\nopen_box(10, 5, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "closed box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 54,
+      "code": "module box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\nbox(10, 5, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cup",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 95,
+      "code": "// Cup Parameters\ncup_height = 80;\ncup_diameter = 60;\nwall_thickness = 3;\nbase_diameter = 50;\nbase_height = 10;\n\n// Main Cup Body\ndifference() {\n  cylinder(h = cup_height, r = cup_diameter / 2, $fn = 50);\n  cylinder(h = cup_height - 2, r = cup_diameter / 2 - wall_thickness, center = true, $fn = 50);\n}\n\n// Base\ntranslate([0,0,cup_height - base_height]) {\n    difference() {\n        cylinder(h = base_height, r = base_diameter / 2, $fn = 50);\n        cylinder(h = base_height, r = base_diameter / 2 - wall_thickness, center = true, $fn = 50);\n    }\n}",
       "inference_error": null,
       "render_error": null
     }
