@@ -1,0 +1,672 @@
+{
+  "model_name": "ThomasTheMaker/k-1b",
+  "timestamp": "2025-10-29T02:52:02.938796",
+  "date": "2025-10-29",
+  "time": "02:52:02",
+  "total_tests": 282,
+  "completed_tests": 73,
+  "code_extraction_success": 73,
+  "code_extraction_rate": "100.0%",
+  "render_success": 57,
+  "render_success_rate": "78.1%",
+  "average_tokens_generated": "53",
+  "results": [
+    {
+      "object": "cube",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 24,
+      "code": "cube(size = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "sphere",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 15,
+      "code": "sphere(r=10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 94,
+      "code": "cylinder(h=10, r=2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cone",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 88,
+      "code": "difference() {\n  rotate_extrude(angle = 180)\n    translate([0, 0, 0])\n      square([1, 1, 1]);\n  linear_extrude(height = 1, convexity = 10)\n    polygon(points=[[0,0], [1,0], [1,1], [0,1]]);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "pyramid",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 80,
+      "code": "module pyramid(base_width, base_depth, height) {\n  linear_extrude(height = height)\n  polygon(points=[\n    [0, 0],\n    [base_width, 0],\n    [base_width, base_depth],\n    [0, base_depth]\n  ]);\n}\n\npyramid(base_width = 50, base_depth = 50, height = 50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "torus",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 95,
+      "code": "module torus(major_radius, minor_radius, segments = 64) {\n  rotate_extrude(convexity = 12) {\n    circle(r = minor_radius, $fn = segments);\n  }\n}\n\ntorus(major_radius = 10, minor_radius = 2);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: all points for rotate_extrude() must have the same X coordinate sign (range is -0.20 -> 2.00)\nGeometries in cache: 2\nGeometry cache size in bytes: 1104\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "tetrahedron",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 65,
+      "code": "// Tetrahedron Generator\n\nmodule tetrahedron(length) {\n  difference() {\n    cube([length, length, length]);\n    translate([length/2, 0, 0])\n    rotate([0, 45, 0])\n    translate([0, length/2, 0])\n    rotate([0, -45, 0])\n    translate([0, 0, 0])\n  }\n}\n\ntetrahedron(5);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmpy5re4u0l/tetrahedron.scad, line 11\nCan't parse file '/tmp/tmpy5re4u0l/tetrahedron.scad'!\n\n"
+    },
+    {
+      "object": "octahedron",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 5,
+      "code": "module octahedron(size) {\n  difference() {\n    cube([size[0], size[1], size[2]]);\n    translate([size[0]/2, size[1]/2, size[2]/2])\n    sphere(size[0]/2);\n    translate([-size[0]/2, size[1]/2, size[2]/2])\n    sphere(size[0]/2);\n    translate([size[0]/2, -size[1]/2, size[2]/2])\n    sphere(size[0]/2);\n    translate([-size[0]/2, -size[1]/2, size[2]/2])\n    sphere(size[0]/2);\n  }\n}\n\noctahedron(50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "pentagon",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 47,
+      "code": "module pentagon(radius, height) {\n  linear_extrude(height = height)\n  polygon(points = [\n    [radius * cos(45), radius * sin(45)],\n    [radius * cos(135), radius * sin(135)],\n    [radius * cos(225), radius * sin(225)],\n    [radius * cos(315), radius * sin(315)],\n    [radius * cos(45), radius * sin(45)]\n  ]);\n}\n\npentagon(radius = 10, height = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "hexagon",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 76,
+      "code": "module hexagon(radius, height) {\n  linear_extrude(height = height)\n    polygon(points=[\n      [radius * cos(30), radius * sin(30)],\n      [radius * cos(60), radius * sin(60)],\n      [radius * cos(90), radius * sin(90)],\n      [radius * cos(120), radius * sin(120)],\n      [radius * cos(150), radius * sin(150)],\n      [radius * cos(180), radius * sin(180)]\n    ]);\n}\n\nhexagon(radius = 10, height = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "heptagon",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 18,
+      "code": "// Parameters for the heptagon\nradius = 10;\nheight = 20;\nsegments = 32;\n\nmodule heptagon(radius, height, segments) {\n  difference() {\n    for (i = [0:segments]) {\n      angle = i * 360 / segments;\n      rotate([0, 0, angle])\n      translate([radius, 0, 0])\n      sphere(r = radius * 1.5);\n    }\n    translate([0,0,-height/2])\n    cube([100, 100, height], center = true);\n  }\n}\n\nheptagon(radius, height, segments);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "octagon",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 83,
+      "code": "module octagon(radius, height) {\n  linear_extrude(height = height) {\n    polygon(points = [\n      [radius * cos(360 / 8) + radius * sin(360 / 8) * 0.1, radius * sin(360 / 8) * 0.1 + radius * sin(360 / 8) * 0.1],\n      [radius * cos(360 / 8) * 0.2, radius * sin(360 / 8) * 0.2 + radius * sin(360 / 8) * 0.2],\n      [radius * cos(360 / 8) * 0.4, radius * sin(360 / 8) * 0.4 + radius * sin(360 / 8) * 0.4],\n      [radius * cos(360 / 8) * 0.6, radius * sin(360 / 8) * 0.6 + radius * sin(360 / 8) * 0.6],\n      [radius * cos(360 / 8) * 0.8, radius * sin(360 / 8) * 0.8 + radius * sin(360 / 8) * 0.8],\n      [radius * cos(360 / 8) * 0.9, radius * sin(360 / 8) * 0.9 + radius * sin(360 / 8) * 0.9],\n      [radius * cos(360 / 8) * 1.1, radius * sin(360 / 8) * 1.1 + radius * sin(360 / 8) * 1.1]\n    ]);\n  }\n}\n\noctagon(radius = 10, height = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "nonagon",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 14,
+      "code": "// Nonagon parameters\nradius = 10;\nheight = 15;\nsegments = 12;\nangle = 360 / segments;\n\nmodule nonagon(radius, height, segments, angle) {\n  polygon(points = [\n    for (i = [0:segments-1]) {\n      angle * cos(i * angle);\n      angle * sin(i * angle);\n      translate([radius, 0, 0])\n      sphere(r = 1);\n    }\n  ]);\n}\n\nnonagon(radius, height, segments, angle);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmpo1xllqdf/nonagon.scad, line 9\nCan't parse file '/tmp/tmpo1xllqdf/nonagon.scad'!\n\n"
+    },
+    {
+      "object": "decagon",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 13,
+      "code": "$fn = 60;\n\nmodule decagon(radius, height) {\n  linear_extrude(height = height) {\n    polygon(points = [\n      [radius * cos(0), radius * sin(0)],\n      [radius * cos(360), radius * sin(360)],\n      [radius * cos(720), radius * sin(720)],\n      [radius * cos(1080), radius * sin(1080)],\n      [radius * cos(1440), radius * sin(1440)],\n      [radius * cos(1800), radius * sin(1800)],\n      [radius * cos(2160), radius * sin(2160)],\n      [radius * cos(2520), radius * sin(2520)],\n      [radius * cos(2880), radius * sin(2880)],\n      [radius * cos(3240), radius * sin(3240)]\n    ]);\n  }\n}\n\ndecagon(radius = 10, height = 10);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - Geometries in cache: 2\nGeometry cache size in bytes: 48\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "dodecagon",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 48,
+      "code": "module dodecagon(radius, height) {\n  difference() {\n    for (i = [0:7]) {\n      angle = i * 360 / 7;\n      rotate([0,0,angle]) {\n        translate([radius, 0, 0]) {\n          linear_extrude(height = height) {\n            polygon(points = [\n              [cos(i * 360 / 7), sin(i * 360 / 7)],\n              [cos(360 / 7) * cos(i * 360 / 7), sin(360 / 7) * sin(i * 360 / 7)],\n              [cos(360 / 7) * cos(i * 360 / 7), sin(360 / 7) * sin(i * 360 / 7)],\n              [cos(360 / 7) * sin(i * 360 / 7), sin(360 / 7) * cos(i * 360 / 7)],\n              [cos(360 / 7) * sin(i * 360 / 7), sin(360 / 7) * cos(i * 360 / 7)],\n              [cos(360 / 7) * sin(i * 360 / 7), cos(360 / 7) * sin(i * 360 / 7)],\n              [cos(360 / 7) * cos(i * 360 / 7), cos(360 / 7) * cos(i * 360 / 7)],\n              [cos(360 / 7) * cos(i * 360 / 7), cos(360 / 7) * cos(i * 360 / 7)]\n            ]);\n          }\n        }\n      }\n    }\n  }\n}\n\ndodecagon(radius = 5, height = 10);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron.\nERROR: The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron.\nERROR: The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron.\nERROR: The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron.\nERROR: The given mesh is not closed! Unable to convert to CGAL_Nef_Polyhedron.\nGeometries in cache: 29\nGeometry cache size in bytes: 34984\nCGAL Polyhedrons in cache: 0\nCGAL cache size "
+    },
+    {
+      "object": "triangular prism",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 81,
+      "code": "module triangular_prism(height, width, depth, angle) {\n  linear_extrude(height = height) {\n    polygon(points = [[0, 0], [width/2, -depth/2], [width, 0]]);\n  }\n}\n\n// Example usage:\ntriangular_prism(height = 10, width = 5, depth = 3, angle = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "square prism",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 76,
+      "code": "module prism(width, depth, height, angle = 90) {\n  translate([0, 0, 0]) {\n    rotate([0, 0, angle]) {\n      cube([width, depth, height]);\n    }\n  }\n}\n\n// Example usage:\nsquare_prism(20, 20, 20);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Ignoring unknown module 'square_prism' in file square prism.scad, line 10\nGeometries in cache: 1\nGeometry cache size in bytes: 0\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "pentagonal prism",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 53,
+      "code": "module pentagonal_prism(width, height, length, angle) {\n  linear_extrude(height = length)\n  polygon(points = [[0,0], [width/2, height/2], [width, height], [width, 0], [0, 0]]);\n}\n\npentagonal_prism(width = 10, height = 5, length = 20, angle = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "hexagonal prism",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 19,
+      "code": "module hexagonal_prism(width, height, height_base, angle) {\n  difference() {\n    cube([width, height, height_base]);\n    translate([width/4, height/4, 0])\n    rotate([0,0,angle])\n    linear_extrude(height = height_base)\n    polygon(points=[[0,0], [width/2, height], [width, 0], [width/2, -height], [0, -height]]);\n  }\n}\n\nhexagonal_prism(width = 50, height = 20, height_base = 50, angle = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "rectangular prism",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 69,
+      "code": "module rectangular_prism(width, depth, height) {\n  cube([width, depth, height]);\n}\n\n// Example usage:\nwidth = 10;\ndepth = 5;\nheight = 2;\n\nrectangular_prism(width, depth, height);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 14,
+      "code": "module box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\n// Example usage:\nbox(10, 5, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "tall box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 54,
+      "code": "module box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\nbox(10, 5, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "wide box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 92,
+      "code": "module wide_box(width, depth, height) {\n  cube([width, depth, height]);\n}\n\nwide_box(100, 50, 20);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "thin box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 97,
+      "code": "module box(width, height, depth, thickness) {\n  cube([width, height, depth]);\n}\n\n// Example usage:\nbox(10, 5, 2, 1);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "box with rounded corners",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 64,
+      "code": "module rounded_cube(size, radius) {\n  hull() {\n    for (i = [0:3]) {\n      for (j = [0:3]) {\n        translate([\n          size[i] * (j + 0.5),\n          size[j] * (i + 0.5),\n          0\n        ])\n        sphere(r = radius);\n      }\n    }\n  }\n}\n\nrounded_cube(size = 50, radius = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "hollow box",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 56,
+      "code": "module hollow_box(width, depth, height, wall_thickness) {\n  difference() {\n    cube([width, depth, height]);\n    translate([wall_thickness, wall_thickness, wall_thickness]) {\n      cube([width - 2 * wall_thickness, depth - 2 * wall_thickness, height - 2 * wall_thickness]);\n    }\n  }\n}\n\nhollow_box(100, 50, 20, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "box with holes",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 95,
+      "code": "module box_with_holes(width, depth, height, hole_diameter, hole_x, hole_y) {\n  difference() {\n    cube([width, depth, height]);\n    translate([hole_x, hole_y, 0])\n    cylinder(h = height, r = hole_diameter/2);\n  }\n}\n\nbox_with_holes(width = 100, depth = 50, height = 25, hole_diameter = 10, hole_x = 25, hole_y = 20);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "tall cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 63,
+      "code": "cylinder(h=10, r=2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "short cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 89,
+      "code": "cylinder(h = 10, r = 2, $fn = 50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "thick cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 54,
+      "code": "cylinder(h=10, r=5, $fn=50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "thin cylinder",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 58,
+      "code": "cylinder(h=10, r=2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cone",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 97,
+      "code": "module cone(h, r1, r2) {\n  linear_extrude(height = h)\n    circle(r = r1 - r2);\n}\n\ncone(h = 10, r1 = 5, r2 = 0);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "frustum",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 55,
+      "code": "// Parameters\nradius = 50;\nheight = 100;\nslices = 48;\nsegments = 64;\nresolution = 0.1;\n\n// Function to create a frustum\nfunction frustum(radius, height, slices, segments, resolution) {\n  difference() {\n    sphere(r = radius);\n    translate([0, 0, -height/2]) {\n      cylinder(r = radius, h = height, $fn = segments);\n    }\n  }\n}\n\nfrustum(radius, height, slices, segments, resolution);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Parser error: syntax error in file ../../../../tmp/tmprn24qio3/frustum.scad, line 9\nCan't parse file '/tmp/tmprn24qio3/frustum.scad'!\n\n"
+    },
+    {
+      "object": "star",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 10,
+      "code": "// Star parameters\nouter_radius = 15;\ninner_radius = 8;\npoints_per_side = 7;\npoints_in_center = 5;\nthickness = 1;\n\nmodule star() {\n  for (i = [0:points_in_center]) {\n    angle = i * 360 / points_in_center;\n    rotate([0, 0, angle]) {\n      translate([outer_radius * 1.5, 0, 0]) {\n        linear_extrude(height = thickness) {\n          circle(r = outer_radius * 0.75);\n        }\n      }\n    }\n  }\n}\n\nmodule star_base() {\n  difference() {\n    cylinder(h = 1, r = inner_radius, center = true);\n    cylinder(h = 1, r = inner_radius, center = true);\n  }\n}\n\n\nmodule star_base_inner() {\n  difference() {\n    cylinder(h = 1, r = inner_radius, center = true);\n    cylinder(h = 1, r = inner_radius, center = true);\n  }\n}\n\nmodule star_base_bottom() {\n  difference() {\n    cylinder(h = 1, r = inner_radius, center = true);\n    cylinder(h = 1, r = inner_radius, center = true);\n  }\n}\n\n\nmodule star() {\n  difference() {\n    union() {\n      translate([0, 0, 0]) {\n        star_base();\n      }\n      translate([0, 0, thickness]) {\n        translate([outer_radius * 1.5, 0, 0]) {\n          rotate([0, 0, angle]) {\n            translate([outer_radius * 0.75, 0, 0]) {\n              linear_extrude(height = thickness) {\n                circle(r = outer_radius * 0.75);\n              }\n            }\n          }\n        }\n      }\n      translate([0, 0, thickness]) {\n          rotate([0, 0, angle]) {\n            translate([outer_radius * 1.5, 0, 0]) {\n              rotate([0, 0, angle]) {\n                translate([outer_radius * 0.75, 0, 0]) {\n                  linear_extrude(height = thickness) {\n                    circle(r = outer_radius * 0.75);\n                  }\n                }\n              }\n            }\n          }\n      }\n      translate([0, 0, thickness]) {\n          rotate([0, 0, angle]) {\n            translate([outer_radius * 1.5, 0, 0]) {\n              rotate([0, 0, angle]) {\n                translate([outer_radius * 0.75, 0, 0]) {\n                  linear_extrude(height = thickness) {\n                    circle(r = outer_radius * 0.75);\n                  }\n                }\n              }\n            }\n          }\n      }\n    }\n  }\n}\n\nmodule star_bottom() {\n  difference() {\n    cylinder(h = 1, r = inner_radius, center = true);\n    cylinder(h = 1, r = inner_radius, center = true);\n  }\n}\nmodule star_bottom_inner() {\n  difference() {\n    cylinder(h = 1, r = inner_radius, center = true);\n    cylinder(h = 1, r = inner_radius, center = true);\n  }\n}\n\nmodule star_bottom_bottom() {\n    difference() {\n      cylinder(h = 1, r = inner_radius, center = true);\n      cylinder(h = 1, r = inner_radius, center = true);\n    }\n}\n\nmodule star_bottom_bottom_inner() {\n    difference() {\n        cylinder(h = 1, r = inner_radius, center = true);\n        cylinder(h = 1, r = inner_radius, center = true);\n    }\n}\n\n\ntranslate([0, 0, -thickness]) {\n  star_bottom_bottom();\n}\n\ntranslate([0, 0, thickness]) {\n  star_bottom();\n}\n\ntranslate([0, 0, -thickness_bottom]) {\n  star_bottom_bottom();\n}\n\ntranslate([0, 0, thickness_bottom]) {\n  star_bottom();\n}\n\ntranslate([0, 0, -thickness_bottom_bottom]) {\n    star_bottom_bottom_inner();\n}",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Ignoring unknown variable 'thickness_bottom' in file star.scad, line 127\nWARNING: undefined operation (-undefined) in file star.scad, line 127\nWARNING: Unable to convert translate([0, 0, undef]) parameter to a vec3 or vec2 of numbers in file star.scad, line 127\nWARNING: Ignoring unknown variable 'thickness_bottom' in file star.scad, line 131\nWARNING: Unable to convert translate([0, 0, undef]) parameter to a vec3 or vec2 of numbers in file star.scad, line 131\nWARNING: Ignoring unknown va"
+    },
+    {
+      "object": "6-pointed star",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 4,
+      "code": "$fn = 60;\nmodule star(radius, point_radius) {\n  for (i = [0:5]) {\n    angle = i * 360 / 5;\n    x = radius * cos(angle);\n    y = radius * sin(angle);\n    translate([x, y, 0])\n      cube([point_radius, point_radius, 1], center = true);\n  }\n}\n\nstar(radius = 20, point_radius = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "8-pointed star",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 34,
+      "code": "$fn = 32;\nr = 5;\n\nmodule star(points) {\n  for (i = [0:7]) {\n    angle = i * 360 / 7;\n    x = r * cos(angle);\n    y = r * sin(angle);\n    translate([x, y]) {\n      cube([4, 4, 1], center = true);\n    }\n  }\n}\n\nstar(points = [\n    [-1, -1, 0],\n    [-1, 1, 0],\n    [0, 0, 1],\n    [1, 0, 0],\n    [0, 1, 0],\n    [-1, 1, 0],\n    [-1, -1, 0],\n    [0, -1, 0]\n]);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "five-pointed star",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 14,
+      "code": "module point(radius, height, angle) {\n    rotate([0,0,angle])\n    translate([radius,0,0])\n    cylinder(h=height, r=radius, $fn=32);\n}\n\ndifference() {\n    union() {\n        for (i = [0:4]) {\n            point(radius=1, height=1, angle=360 / 5);\n        }\n    }\n    translate([0,0,-1])\n    cube([10,10,2], center=true);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "crescent",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 66,
+      "code": "$fn = 60;\n\nmodule crescent(width, height, thickness, curve_radius) {\n  difference() {\n    linear() {\n      polygon(points = [\n        [0, 0],\n        [width / 2, height / 2],\n        [width / 2 - curve_radius, height / 2 - curve_radius],\n        [0, 0]\n      ]);\n      translate([0, 0])\n      rotate([90,0,0])\n      linear()\n        polygon(points = [\n          [0, 0],\n          [width / 2, height / 2],\n          [width / 2 - curve_radius, height / 2 - curve_radius],\n          [0, 0]\n        ]);\n      translate([width / 2, height / 2])\n      rotate([90,0,0])\n      linear()\n        polygon(points = [\n          [0, 0],\n          [width / 2, height / 2],\n          [width / 2 - curve_radius, height / 2 - curve_radius],\n          [0, 0]\n        ]);\n    }\n    \n    translate([0,0,0])\n    cube([width, height, thickness]);\n  }\n}\n\ncrescent(width = 50, height = 20, thickness = 10, curve_radius = 15);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "donut",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 62,
+      "code": "module donut(r1, r2, h) {\n  difference() {\n    union() {\n      cylinder(r = r1, h = h, $fn = 60);\n      translate([0, 0, h])\n      cylinder(r = r2, h = 1, $fn = 60);\n    }\n    \n    translate([0,0,-1])\n    cylinder(r = r1, h = 1, $fn = 60);\n  }\n}\n\ndonut(r1 = 20, r2 = 10, h = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cube with hole",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 38,
+      "code": "module cube(size, hole_radius) {\n  difference() {\n    cube(size);\n    translate([hole_radius, hole_radius, hole_radius])\n    cylinder(h = size - 2 * hole_radius, r = hole_radius, $fn = 50);\n  }\n}\n\ncube([10, 10, 10], 2);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Recursion detected calling module 'cube' in file cube with hole.scad, line 1\nTRACE: called by 'cube' in file cube with hole.scad, line 3\nTRACE: called by 'difference' in file cube with hole.scad, line 2\nTRACE: called by 'cube' in file cube with hole.scad, line 3\nTRACE: called by 'difference' in file cube with hole.scad, line 2\nTRACE: called by 'cube' in file cube with hole.scad, line 3\nTRACE: called by 'difference' in file cube with hole.scad, line 2\nTRACE: called by 'cube' in file cube w"
+    },
+    {
+      "object": "sphere with hole",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 63,
+      "code": "module sphere_with_hole(r, hole_radius) {\n  difference() {\n    sphere(r);\n    translate([0, 0, -hole_radius])\n      cylinder(h = 2 * hole_radius, r = hole_radius, center = true);\n  }\n}\n\nsphere_with_hole(r = 5, hole_radius = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cube with spheres",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 16,
+      "code": "// Cube with Spheres\n$fn = 50;\n\nmodule sphere(r) {\n  sphere(r);\n}\n\ndifference() {\n  cube([100, 100, 100]);\n  for (i = [0:10]) {\n    sphere(r = 10);\n  }\n}",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: Recursion detected calling module 'sphere' in file cube with spheres.scad, line 4\nTRACE: called by 'sphere' in file cube with spheres.scad, line 5\nTRACE: called by 'sphere' in file cube with spheres.scad, line 5\nTRACE: called by 'sphere' in file cube with spheres.scad, line 5\nTRACE: called by 'sphere' in file cube with spheres.scad, line 5\nTRACE: called by 'sphere' in file cube with spheres.scad, line 5\nGeometries in cache: 1\nGeometry cache size in bytes: 0\nCGAL Polyhedrons in cache: 0\nCG"
+    },
+    {
+      "object": "interlocking cubes",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 35,
+      "code": "// Interlocking CUBE\n\n// Parameters\ncell_size = 10;\ncell_height = 10;\nwall_thickness = 1;\nrounding_radius = 2;\n\nmodule interlocking_cube(x, y, z) {\n  translate([x, y, z])\n  cube([cell_size, cell_size, cell_height]);\n}\n\ndifference() {\n  union() {\n    for (x = [-1, 0, 1]) {\n      for (y = [-1, 0, 1]) {\n        for (z = [-1, 0, 1]) {\n          interlocking_cube(x, y, z);\n        }\n      }\n    }\n  }\n\n  // Subtract a cube to create the interlocking feature\n  translate([0,0,0])\n  cube([cell_size, cell_size, cell_height]);\n\n  translate([0,0,0])\n  cube([cell_size, cell_size, cell_height]);\n  \n  translate([0,0,0])\n  cube([cell_size, cell_size, cell_height]);\n  \n  translate([0,0,0])\n  cube([cell_size, cell_size, cell_height]);\n  \n  translate([0,0,0])\n  cube([cell_size, cell_size, cell_height]);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "sierpinski pyramid",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 33,
+      "code": "module sierpinski_pyramid(height, layers, radius, angle) {\n  $fn = 100;\n  \n  for (i = [0:layers-1]) {\n    rotate([0, 0, i * 360 / layers]) {\n      translate([0, 0, height * i / layers]) {\n        cylinder(r = radius, h = height * i / layers, $fn = $fn);\n      }\n    }\n  }\n}\n\nsierpinski_pyramid(height = 30, layers = 6, radius = 20, angle = 45);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "flower",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 3,
+      "code": "// Flower parameters\npetal_width = 10;\npetal_height = 12;\npetal_thickness = 0.8;\ncenter_radius = 2;\nstem_radius = 3;\nstem_height = 15;\nstem_offset = 1;\n\nmodule petal(angle) {\n  rotate([0, 0, angle]) {\n    translate([0, 0, 0]) {\n      cube([petal_width, petal_height, petal_thickness]);\n    }\n  }\n}\n\nmodule flower() {\n  difference() {\n    union() {\n      // Petals\n      for (i = [0:3]) {\n        petal(i * 360 / 6);\n      }\n\n      // Center\n      translate([0, 0, petal_height/2]) {\n        sphere(radius = center_radius);\n      }\n\n      // Stem\n      translate([0, 0, stem_offset]) {\n        cylinder(h = stem_height, r = stem_radius);\n      }\n    }\n\n    // Remove center to create a hole for a flower center (optional)\n    translate([0, 0, petal_height/2]) {\n      cube([petal_width, petal_height, petal_thickness]);\n    }\n  }\n}\n\nflower();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "flower with petals",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 16,
+      "code": "// Flower petals\n\nmodule petal(length, width, radius) {\n  translate([0, 0, 0])\n  difference() {\n    cylinder(h = length, r = radius, $fn = 32);\n    translate([0, 0, -0.1])\n    cube([length, width, 0.2], center = true);\n  }\n}\n\nmodule flower(num_petals, petal_length, petal_width, petal_radius) {\n  for (i = [0:num_petals-1]) {\n    petal(petal_length, petal_width, petal_radius);\n  }\n}\n\nflower(num_petals = 5, petal_length = 15, petal_width = 3, petal_radius = 1.5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "gear",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 68,
+      "code": "module gear(\n  radius,\n  pressure_angle = 20,\n  number_of_teeth = 20,\n  height = 10,\n  thickness = 10\n) {\n  // Calculate gear parameters\n  pitch_radius = radius * cos(pressure_angle);\n  base_radius = radius;\n  height = height;\n\n  // Create the gear teeth\n  linear_extrude(height = height)\n  for (i = [0:number_of_teeth - 1]) {\n    angle = i * 360 / number_of_teeth;\n    rotate([0, 0, angle])\n    translate([pitch_radius, 0, 0])\n    cube([thickness, pitch_radius*2, height]);\n  }\n}\n\ngear(\n  radius = 10,\n  pressure_angle = 20,\n  number_of_teeth = 20,\n  height = 10,\n  thickness = 10\n);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Ignoring 3D child object for 2D operation in file gear.scad, line 15\nGeometries in cache: 23\nGeometry cache size in bytes: 16016\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 215760\nTotal rendering time: 0:00:01.194\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "spiral",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 94,
+      "code": "module spiral(radius, height, segments) {\n  $fn = segments;\n  angle = 360 / segments;\n\n  for (i = [0:segments]) {\n    rotate([0, 0, i * angle])\n    translate([radius, 0, 0])\n    linear_extrude(height = height)\n    circle(r = radius * 1.5);\n  }\n}\n\nspiral(radius = 10, height = 5, segments = 64);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "helix",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 21,
+      "code": "module helix(height, radius, turns, segments) {\n  linear_extrude(height = height, convexity = 10) {\n    for (i = [0:turns-1]) {\n      rotate([0,0,i * 360 / turns])\n      translate([radius, 0, 0])\n      circle(r = radius * cos(i * 360 / turns));\n    }\n  }\n}\n\nhelix(height = 50, radius = 10, turns = 5, segments = 100);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "wave",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 31,
+      "code": "// Wave parameters\namplitude = 10;\nfrequency = 1;\nwavelength = 10;\nresolution = 64;\n\nmodule wave(amplitude, frequency, wavelength, resolution) {\n  for (i = [0:resolution]) {\n    x = i * (wavelength / resolution);\n    y = amplitude * sin(2 * PI * frequency * i);\n  }\n}\n\nwave(amplitude, frequency, wavelength, resolution);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - Geometries in cache: 1\nGeometry cache size in bytes: 0\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "ripple",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 20,
+      "code": "// Ripple parameters\nradius = 10;\nheight = 5;\ncurvature = 0.5;\nsegments = 60;\n\ndifference() {\n  rotate_extrude(angle = 360)\n    translate([radius, 0, 0])\n      linear_extrude(height = height, convexity = 10)\n        circle(r = radius);\n}",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Ignoring 3D child object for 2D operation in file ripple.scad, line 9\nGeometries in cache: 4\nGeometry cache size in bytes: 17568\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "bracket",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 16,
+      "code": "// Bracket parameters\nbracket_width = 50;\nbracket_height = 20;\nbracket_depth = 10;\nhole_diameter = 3;\nhole_offset_x = 10;\nhole_offset_y = 2;\n\nmodule bracket() {\n  difference() {\n    cube([bracket_width, bracket_height, bracket_depth]);\n    translate([hole_offset_x, hole_offset_y, 0])\n      cylinder(h=bracket_height, r=hole_diameter/2, $fn=30);\n  }\n}\n\nbracket();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "clamp",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 18,
+      "code": "// Clamp Parameters\nclamp_width = 50;\nclamp_height = 100;\nclamp_depth = 20;\nscrew_diameter = 4;\nscrew_length = 50;\nhandle_width = 20;\nhandle_height = 60;\nhandle_thickness = 5;\n\n// Main Body\ndifference() {\n  cube([clamp_width, clamp_height, clamp_depth]);\n\n  // Screw Hole\n  translate([clamp_width/2 - screw_diameter/2, clamp_height/2 - screw_diameter/2, clamp_depth/2 - screw_diameter/2])\n  cylinder(h=screw_length, r=screw_diameter/2, $fn=50);\n}\n\n// Handle\ndifference() {\n  cube([clamp_width, handle_height, handle_thickness]);\n  translate([clamp_width/2 - handle_width/2, 0, -1])\n  cube([handle_width, handle_height + 2, handle_thickness + 2]);\n}\n\n// Screw\ntranslate([clamp_width/2, clamp_height/2, clamp_depth/2])\ncylinder(h=clamp_depth, r=screw_diameter/2, $fn=50);\n\n// Screw Hole\ntranslate([clamp_width/2, clamp_height/2, clamp_depth/2])\ncylinder(h=clamp_depth + 1, r=screw_diameter/2, $fn=50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "hinge",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 42,
+      "code": "// Hinge Parameters\nwidth = 50;\nheight = 30;\ndepth = 20;\npin_diameter = 6;\npin_length = 10;\nhole_clearance = 0.5;\n\nmodule hinge(width, height, depth, pin_diameter, pin_length, hole_clearance) {\n  difference() {\n    cube([width, height, depth]);\n    translate([width/2 - pin_diameter/2, 0, 0])\n    cylinder(h = height, r = pin_diameter/2, $fn = 50);\n    translate([width/2 + pin_diameter/2, 0, 0])\n    cylinder(h = height, r = pin_diameter/2, $fn = 50);\n  }\n}\n\nmodule pin() {\n  cylinder(h = pin_length, r = pin_diameter/2, $fn = 50);\n}\n\n// Render the hinge\nhinge(width, height, depth, pin_diameter, pin_length, hole_clearance);\n\n// Render a pin\ntranslate([0, 0, -2])\npin();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "hook",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 49,
+      "code": "// Hook parameters\nhook_length = 50;\nhook_width = 15;\nhook_height = 10;\nhook_radius = 2;\nhook_angle = 120;\n\ndifference() {\n  union() {\n    // Main body\n    cube([hook_length, hook_width, hook_height]);\n\n    // Angled part\n    rotate([0, 0, hook_angle]) {\n      translate([0, -hook_width/2, 0]) {\n        cube([hook_length, hook_width, hook_height]);\n      }\n    }\n  }\n\n  // Rounding\n  hull() {\n    for (i = [0:2]) {\n      for (j = [0:2]) {\n        translate([i * hook_length, j * hook_width, 0]) {\n          cylinder(h = hook_height, r = hook_radius);\n        }\n      }\n    }\n  }\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "ring",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 24,
+      "code": "ring_radius = 10;\nring_thickness = 2;\nring_hole_radius = 2;\n\ndifference() {\n    cylinder(h = ring_thickness, r = ring_radius);\n    cylinder(h = ring_thickness + 0.1, r = ring_hole_radius);\n}",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "washer",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 76,
+      "code": "module washer(outer_diameter, inner_diameter, thickness) {\n  difference() {\n    cylinder(h = thickness, r = outer_diameter / 2, center = false);\n    cylinder(h = thickness, r = inner_diameter / 2, center = false);\n  }\n}\n\nwasher(outer_diameter = 50, inner_diameter = 25, thickness = 3);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "bushing",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 86,
+      "code": "module bushing(diameter, height, wall_thickness, hole_diameter, hole_distance) {\n  difference() {\n    cylinder(h = height, d = diameter);\n    translate([0,0,-0.1])\n    cylinder(h = height + 0.2, d = diameter - 0.1);\n    translate([0,0,height])\n    cylinder(h = height + 0.2, d = diameter - 0.1);\n  }\n\n  \n  if (hole_diameter < diameter/3) {\n    translate([0,0,height])\n    cylinder(h = hole_diameter, d = hole_diameter);\n  }\n\n  if (hole_diameter > diameter/3) {\n    translate([0,0,height])\n    cylinder(h = hole_diameter, d = hole_diameter);\n  }\n}\n\nbushing(diameter = 10, height = 20, wall_thickness = 1.5, hole_diameter = 5, hole_distance = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "spacer",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 61,
+      "code": "module spacer(width, height, depth) {\n  cube([width, height, depth]);\n}\n\nspacer(10, 5, 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "letter A",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 85,
+      "code": "module a(size = 50) {\n  difference() {\n    cube([size, size, size]);\n    translate([size/2, size/2, size/2])\n    cylinder(h = size, r = size/4, $fn=32);\n  }\n}\n\na(size = 50);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "letter B",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 49,
+      "code": "module b(height = 5, width = 20, depth = 10, rounding = 2) {\n  hull() {\n    translate([0, 0, 0]) cube([width, depth, height], center = true);\n    translate([width/2, depth/2, height/2]) sphere(r = rounding);\n  }\n}\n\nb(height = 5, width = 20, depth = 10, rounding = 2);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "letter O",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 16,
+      "code": "module o(height = 10, radius = 20, detail = 3) {\n  difference() {\n    cylinder(h = height, r = radius, $fn = detail);\n    translate([0,0,height/2])\n    sphere(r = radius * 0.7, $fn = detail);\n  }\n}\n\no();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "letter S",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 56,
+      "code": "module letter_s(height = 20) {\n  difference() {\n    cube([height, height, height]);\n    translate([0, height, height])\n    cube([height, height, height - 1]);\n  }\n}\n\nletter_s();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "letter T",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 66,
+      "code": "module t(height = 2, width = 50, depth = 30) {\n  difference() {\n    cube([width, depth, height]);\n    translate([5, 5, 5])\n    cube([width - 10, depth - 10, height - 10]);\n  }\n}\n\nt(height = 2, width = 50, depth = 30);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "number 0",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 43,
+      "code": "module number_zero(radius, height) {\n  difference() {\n    cylinder(h = height, r = radius, $fn = 100);\n    cylinder(h = height - 0.1, r = radius - 0.1, $fn = 100);\n  }\n}\n\nnumber_zero(radius = 10, height = 5);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "number 1",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 75,
+      "code": "module number_one(size = 10) {\n  difference() {\n    cube([size, size, size]);\n    translate([size/4, size/4, size/4])\n      cylinder(h = size/4, r = size/12, $fn = 12);\n  }\n}\n\nnumber_one();",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "number 8",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 68,
+      "code": "module number_eight(radius, height) {\n  difference() {\n    cylinder(r = radius, h = height);\n    cylinder(r = radius * 0.8, h = height * 0.8);\n  }\n}\n\nnumber_eight(radius = 5, height = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "cube with eyes",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 38,
+      "code": "// Parameters\ncube_size = 20;\neye_radius = 5;\neye_offset_x = 10;\neye_offset_y = 10;\neye_offset_z = 10;\n\nmodule cube() {\n  cube([cube_size, cube_size, cube_size]);\n}\n\nmodule eye() {\n  sphere(eye_radius);\n}\n\ndifference() {\n  cube();\n  translate([eye_offset_x, eye_offset_y, eye_offset_z])\n    eye();\n  translate([-eye_offset_x, -eye_offset_y, eye_offset_z])\n    eye();\n  translate([eye_offset_x, -eye_offset_y, -eye_offset_z])\n    eye();\n  translate([-eye_offset_x, eye_offset_y, -eye_offset_z])\n    eye();\n}",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Too many unnamed arguments supplied in file cube with eyes.scad, line 9\nWARNING: Too many unnamed arguments supplied in file cube with eyes.scad, line 9\nWARNING: Too many unnamed arguments supplied in file cube with eyes.scad, line 9\nWARNING: Too many unnamed arguments supplied in file cube with eyes.scad, line 9\nWARNING: Too many unnamed arguments supplied in file cube with eyes.scad, line 9\nERROR: Recursion detected calling module 'cube' in file cube with eyes.scad, line 8\nTRACE: call"
+    },
+    {
+      "object": "pyramid with face",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 88,
+      "code": "module pyramid(base_width, base_depth, base_height, face_width, face_depth, face_height) {\n  polyhedron(\n    points = [\n      [0, 0, 0],\n      [base_width, 0, 0],\n      [base_width, face_depth, 0],\n      [0, face_depth, 0],\n      [base_width / 2, face_depth / 2, base_height]\n    ],\n    faces = [\n      [0, 1, 4],\n      [1, 2, 4],\n      [2, 3, 4],\n      [3, 0, 4],\n      [0, 1, 2]\n    ]\n  );\n}\n\nmodule pyramid(base_width, base_depth, base_height, face_width, face_depth, face_height) {\n  polyhedron(\n    points = [\n      [0, 0, 0],\n      [base_width, 0, 0],\n      [base_width, face_depth, 0],\n      [0, face_depth, 0],\n      [base_width / 2, face_depth / 2, base_height]\n    ],\n    faces = [\n      [0, 1, 4],\n      [1, 2, 4],\n      [2, 3, 4],\n      [3, 0, 4],\n      [0, 1, 2]\n    ]\n  );\n}\n\npyramid(base_width = 50, base_depth = 30, base_height = 20, face_width = 40, face_depth = 20, face_height = 10);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "sphere head",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 87,
+      "code": "// Sphere head in OpenSCAD\n\n// Parameters\nr = 50;  // Radius of the sphere head\nheight = 75; // Height of the sphere head\nsegments = 64; // Number of segments for the sphere\n\n// Function to create a sphere with a given radius\nmodule sphere(r) {\n  rotate_extrude(convexity = 10)\n  circle(r = r);\n}\n\ndifference() {\n  sphere(r);\n  translate([0, 0, -height / 4])\n    cube([r * 2, r * 2, height * 2], center = true);\n}",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - ERROR: all points for rotate_extrude() must have the same X coordinate sign (range is -5.23 -> 50.00)\nGeometries in cache: 5\nGeometry cache size in bytes: 2016\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.001\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "cylinder body",
+      "code_extracted": true,
+      "render_success": false,
+      "tokens_generated": 91,
+      "code": "cylinder_body = cylinder(h=10, r=5, $fn=50);",
+      "inference_error": null,
+      "render_error": "Render failed - no valid output file - WARNING: Ignoring unknown function 'cylinder' in file cylinder body.scad, line 1\nGeometries in cache: 1\nGeometry cache size in bytes: 0\nCGAL Polyhedrons in cache: 0\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.000\nCurrent top level object is empty.\n"
+    },
+    {
+      "object": "bird shape",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 77,
+      "code": "// Bird Model in OpenSCAD\n\nmodule bird(scale = 1.5) {\n  difference() {\n    union() {\n      // Body\n      sphere(r = 25 * scale);\n\n      // Tail\n      translate([0, 0, 15 * scale])\n      cylinder(h = 15 * scale, r = 10 * scale);\n\n      // Beak\n      translate([0, 0, -10 * scale])\n      cube([5 * scale, 2 * scale, 3 * scale]);\n\n      // Wings\n      translate([-10 * scale, 0, 0])\n      rotate([0, 0, -45])\n      cube([15 * scale, 2 * scale, 3 * scale]);\n\n      translate([10 * scale, 0, 0])\n      rotate([0, 0, 45])\n      cube([15 * scale, 2 * scale, 3 * scale]);\n\n      // Legs (simple cylinders)\n      translate([-15 * scale, 0, -5 * scale])\n      cylinder(h = 6 * scale, r = 2 * scale);\n\n      translate([15 * scale, 0, -5 * scale])\n      cylinder(h = 6 * scale, r = 2 * scale);\n    }\n\n    // Hole for eyes\n    translate([0, 0, -10 * scale])\n    sphere(r = 5 * scale);\n  }\n\n}\n\nbird(scale = 1);",
+      "inference_error": null,
+      "render_error": null
+    },
+    {
+      "object": "fish",
+      "code_extracted": true,
+      "render_success": true,
+      "tokens_generated": 49,
+      "code": "// Fish Model in OpenSCAD\n\n// Parameters\nfish_length = 50;\nfish_width = 30;\nfish_height = 15;\nfin_length = 15;\nfin_width = 5;\neye_radius = 2;\nmouth_width = 8;\nmouth_height = 2;\n\nmodule fish() {\n  difference() {\n    union() {\n      // Body\n      translate([0, 0, 0])\n      cube([fish_length, fish_width, fish_height]);\n\n      // Top Fin\n      translate([fish_length / 4, -fish_width / 2 - fin_width / 2, fish_height / 2])\n      rotate([0, 0, 45])\n      cube([fin_length, fin_width, 1]);\n\n      // Bottom Fin\n      translate([fish_length / 4, fish_width / 2 + fin_width / 2, fish_height / 2])\n      rotate([0, 0, -45])\n      cube([fin_length, fin_width, 1]);\n    }\n\n    // Mouth\n    translate([fish_length / 2, -fish_width / 2 + mouth_width / 2, fish_height / 2])\n    cube([mouth_width, mouth_height, 1]);\n  }\n}\n\nfish();",
+      "inference_error": null,
+      "render_error": null
+    }
+  ]
+}

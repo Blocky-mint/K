@@ -22,12 +22,16 @@ from datasets import load_dataset
 from PIL import Image
 import base64
 from io import BytesIO
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import multiprocessing
 
 # Configuration
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llava:7b"  # Vision-capable model for image labeling
 RENDER_TIMEOUT = 30
 MAX_SAMPLES = None  # Process entire dataset (26,480 entries)
+MAX_WORKERS = min(8, multiprocessing.cpu_count())  # Parallel workers
+SAVE_BATCH_SIZE = 50  # Save results in batches to reduce file I/O contention
 
 def call_ollama(prompt):
     """Call Ollama API to generate object labels"""
@@ -250,40 +254,47 @@ def save_entry_progressively(entry, output_file):
     """Save a single entry to the JSON file"""
     existing_entries = load_existing_entries(output_file)
     existing_entries.append(entry)
-    
+
     with open(output_file, 'w') as f:
         json.dump(existing_entries, f, indent=2)
 
-def process_dataset_entry(entry, index, output_file):
-    """Process a single dataset entry and save it immediately"""
+def save_batch_entries(entries, output_file):
+    """Save multiple entries to the JSON file at once"""
+    existing_entries = load_existing_entries(output_file)
+    existing_entries.extend(entries)
+
+    with open(output_file, 'w') as f:
+        json.dump(existing_entries, f, indent=2)
+
+def process_dataset_entry(entry, index):
+    """Process a single dataset entry and return the result"""
     code = entry['code']
     previous_name = entry['name']
-    
+
     print(f"[{index}] Processing: {previous_name}")
-    
+
     # Render OpenSCAD code to image
     image_path = render_openscad_to_image(code, index)
     if not image_path:
         print(f"  ✗ Failed to render {previous_name}")
-        return False
-    
+        return None
+
     # Generate new label using VLM
     new_label = generate_label_with_vlm(code, previous_name, image_path)
     if not new_label:
         print(f"  ✗ Failed to generate label for {previous_name}")
-        return False
-    
+        return None
+
     print(f"  ✓ {previous_name} -> {new_label}")
-    
-    # Create entry and save immediately
+
+    # Create and return entry (don't save here - batched in main)
     labeled_entry = {
         "code": code,
         "previous_name": previous_name,
         "name": new_label
     }
-    
-    save_entry_progressively(labeled_entry, output_file)
-    return True
+
+    return labeled_entry
 
 def cleanup_images():
     """Clean up old rendered images"""
@@ -326,42 +337,74 @@ def main():
     else:
         print(f"✓ Starting fresh")
     
-    # Process entries
+    # Process entries in parallel
     successful_count = start_index
     failed_count = 0
     start_time = time.time()
-    
-    print(f"\nProcessing {len(dataset)} entries...")
+
+    print(f"\nProcessing {len(dataset)} entries with {MAX_WORKERS} parallel workers...")
     print("-" * 80)
-    
-    for i, entry in enumerate(dataset):
-        # Skip already processed entries
-        if i < start_index:
-            continue
-            
-        try:
-            success = process_dataset_entry(entry, i + 1, output_file)
-            if success:
-                successful_count += 1
-            else:
+
+    # Collect entries to process (skip already processed)
+    entries_to_process = [(entry, i + 1) for i, entry in enumerate(dataset) if i >= start_index]
+
+    # Batch results before saving
+    result_batch = []
+    processed_count = 0
+
+    # Use ProcessPoolExecutor for parallel processing
+    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        # Submit all tasks
+        future_to_index = {
+            executor.submit(process_dataset_entry, entry, idx): (entry, idx)
+            for entry, idx in entries_to_process
+        }
+
+        # Process results as they complete
+        for future in as_completed(future_to_index):
+            entry, idx = future_to_index[future]
+            processed_count += 1
+
+            try:
+                result = future.result()
+                if result:
+                    result_batch.append(result)
+                    successful_count += 1
+                else:
+                    failed_count += 1
+            except Exception as e:
+                print(f"  ✗ Error processing entry {idx}: {e}")
                 failed_count += 1
-        except Exception as e:
-            print(f"  ✗ Error processing entry {i + 1}: {e}")
-            failed_count += 1
-        
-        # Progress update
-        processed = i + 1 - start_index
-        if processed > 0 and processed % 100 == 0:
+
+            # Save batch when it reaches threshold
+            if len(result_batch) >= SAVE_BATCH_SIZE:
+                save_batch_entries(result_batch, output_file)
+                print(f"\n💾 Saved batch of {len(result_batch)} entries")
+                result_batch = []
+
+            # Live progress update (overwrites same line)
             elapsed_time = time.time() - start_time
-            avg_time_per_entry = elapsed_time / processed
-            remaining_entries = len(dataset) - i - 1
-            estimated_remaining_time = remaining_entries * avg_time_per_entry
-            
-            print(f"\n📊 Progress: {processed} new entries processed, {successful_count} total successful, {failed_count} failed")
-            print(f"   Overall progress: {i+1}/{len(dataset)} ({((i+1)/len(dataset))*100:.1f}%)")
-            print(f"   Elapsed: {elapsed_time/60:.1f}min | Est. remaining: {estimated_remaining_time/60:.1f}min")
-            print("-" * 60)
-    
+            avg_time_per_entry = elapsed_time / processed_count if processed_count > 0 else 0
+            remaining_entries = len(entries_to_process) - processed_count
+            estimated_remaining_time = remaining_entries * avg_time_per_entry if avg_time_per_entry > 0 else 0
+
+            current_total = start_index + processed_count
+            progress_pct = (current_total/len(dataset))*100
+
+            # Use \r to overwrite the same line
+            status = f"\r📊 Progress: {current_total}/{len(dataset)} ({progress_pct:.1f}%) | "
+            status += f"✓ {successful_count} ✗ {failed_count} | "
+            status += f"Elapsed: {elapsed_time/60:.1f}m | ETA: {estimated_remaining_time/60:.1f}m | "
+            status += f"Rate: {60/avg_time_per_entry:.1f}/min" if avg_time_per_entry > 0 else "Rate: calculating..."
+            print(status, end='', flush=True)
+
+    # Clear the progress line and save any remaining results
+    print()  # Move to new line after progress updates
+
+    if result_batch:
+        save_batch_entries(result_batch, output_file)
+        print(f"💾 Saved final batch of {len(result_batch)} entries")
+
     # Final summary
     total_time = time.time() - start_time
     print(f"\n{'='*80}")

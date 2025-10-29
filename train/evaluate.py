@@ -181,20 +181,16 @@ def get_llama_cli_path():
 def run_inference(model_path, object_name, llama_cli_path):
     """Run inference using llama-cli and extract token count"""
     prompt = f"hey cadmonkey, create me a {object_name}"
-    
+
     print(f"  🎯 Generating: {object_name}")
-    
+
     try:
         # Build command - simpler approach
         cmd = [
             llama_cli_path,
-            "-m", model_path,
-            "-n", "1024",
-            "--temp", "0.7",
-            "--top-p", "0.95",
-            "-c", "1024",
+            "-m", model_path
         ]
-        
+
         # Run with stdin for the prompt
         result = subprocess.run(
             cmd,
@@ -203,12 +199,15 @@ def run_inference(model_path, object_name, llama_cli_path):
             text=True,
             timeout=300  # 5 minute timeout
         )
-        
+
+        error_msg = None
         if result.returncode != 0:
             print(f"    ⚠ Return code: {result.returncode}")
+            error_msg = f"Return code: {result.returncode}"
             if result.stderr:
                 print(f"    Error: {result.stderr[:300]}")
-        
+                error_msg += f" - {result.stderr[:500]}"
+
         # Extract token count from stderr (llama-cli outputs stats there)
         tokens_generated = 0
         if result.stderr:
@@ -220,23 +219,26 @@ def run_inference(model_path, object_name, llama_cli_path):
                     tokens_generated = int(match.group(1))
                 except ValueError:
                     pass
-        
+
         # If we couldn't extract from stderr, estimate from output length
         if tokens_generated == 0 and result.stdout:
             # Rough estimate: ~4 chars per token
             tokens_generated = len(result.stdout) // 4
-        
-        return result.stdout if result.stdout else None, tokens_generated
-        
+
+        return result.stdout if result.stdout else None, tokens_generated, error_msg
+
     except subprocess.TimeoutExpired:
-        print(f"    ✗ Timeout (>300s) generating {object_name}")
-        return None, 0
+        error_msg = "Timeout (>300s) generating response"
+        print(f"    ✗ {error_msg}")
+        return None, 0, error_msg
     except FileNotFoundError:
-        print(f"    ✗ llama-cli not found at: {llama_cli_path}")
-        return None, 0
+        error_msg = f"llama-cli not found at: {llama_cli_path}"
+        print(f"    ✗ {error_msg}")
+        return None, 0, error_msg
     except Exception as e:
+        error_msg = str(e)
         print(f"    ✗ Error: {e}")
-        return None, 0
+        return None, 0, error_msg
 
 # =============================================================================
 # OPENSCAD CODE EXTRACTION
@@ -246,43 +248,30 @@ def extract_openscad_code(text):
     """Extract OpenSCAD code from the generated text"""
     if not text:
         return None
-    
-    # Try to find code blocks with markdown syntax
-    markdown_pattern = r'```(?:scad|openscad)?\n(.*?)\n```'
-    matches = re.findall(markdown_pattern, text, re.DOTALL)
-    if matches:
-        return matches[0]
-    
-    # Try to find raw OpenSCAD commands
-    # Look for common OpenSCAD keywords
-    scad_keywords = ['cube', 'sphere', 'cylinder', 'translate', 'rotate', 'scale', 'union', 'difference', 'intersection']
-    
+
+    # Strip llama-cli REPL prompt markers
     lines = text.split('\n')
-    scad_lines = []
-    in_code = False
-    
+    cleaned_lines = []
+
     for line in lines:
-        # Start collecting if we find OpenSCAD keywords
-        if any(keyword in line.lower() for keyword in scad_keywords):
-            in_code = True
-        
-        if in_code:
-            # Include lines that look like OpenSCAD code
-            if line.strip() and (
-                line.strip().startswith('//') or
-                any(keyword in line for keyword in scad_keywords) or
-                any(char in line for char in ['(', ')', '{', '}', '[', ']', ';'])
-            ):
-                scad_lines.append(line)
-    
-    if scad_lines:
-        return '\n'.join(scad_lines)
-    
-    # If we can't find structured code, return the whole output
-    # (sometimes models generate code without markdown formatting)
-    if text.strip():
-        return text
-    
+        # Skip the EOF marker line
+        if line.strip() == '> EOF by user' or line.strip() == '>EOF by user':
+            continue
+
+        # Remove '> ' prefix from lines that start with it
+        if line.startswith('> '):
+            cleaned_lines.append(line[2:])  # Remove '> ' (2 characters)
+        elif line.startswith('>') and len(line) > 1 and line[1] != '>':
+            cleaned_lines.append(line[1:])  # Remove '>' (1 character)
+        else:
+            cleaned_lines.append(line)
+
+    # Join and strip whitespace
+    cleaned_code = '\n'.join(cleaned_lines).strip()
+
+    if cleaned_code:
+        return cleaned_code
+
     return None
 
 # =============================================================================
@@ -307,20 +296,21 @@ def get_openscad_path():
 def render_openscad(scad_code, object_name):
     """Render OpenSCAD code to STL/PNG"""
     openscad_path = get_openscad_path()
-    
+
     if not openscad_path:
-        print(f"    ⚠ OpenSCAD not found, skipping rendering")
-        return False
-    
+        error_msg = "OpenSCAD not found, skipping rendering"
+        print(f"    ⚠ {error_msg}")
+        return False, error_msg
+
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
             scad_file = os.path.join(tmpdir, f"{object_name}.scad")
             output_file = os.path.join(tmpdir, f"{object_name}.stl")
-            
+
             # Write OpenSCAD code to file
             with open(scad_file, 'w') as f:
                 f.write(scad_code)
-            
+
             # Render to STL using headless mode
             cmd = [
                 openscad_path,
@@ -328,7 +318,7 @@ def render_openscad(scad_code, object_name):
                 "--export-format", "stl",
                 scad_file
             ]
-            
+
             print(f"    Running OpenSCAD render...")
             result = subprocess.run(
                 cmd,
@@ -336,27 +326,34 @@ def render_openscad(scad_code, object_name):
                 text=True,
                 timeout=120  # 2 minute timeout for complex renders
             )
-            
+
             # Check if output file was created and has content
             if os.path.exists(output_file) and os.path.getsize(output_file) > 100:
                 file_size = os.path.getsize(output_file)
                 print(f"    ✓ Successfully rendered: {object_name} ({file_size} bytes)")
-                return True
+                return True, None
             else:
-                print(f"    ✗ Render failed for {object_name}")
+                error_msg = "Render failed - no valid output file"
+                print(f"    ✗ {error_msg}")
                 if result.stderr:
-                    stderr_msg = result.stderr[:300]
+                    stderr_msg = result.stderr[:500]
                     print(f"      Error: {stderr_msg}")
+                    error_msg += f" - {stderr_msg}"
                 if result.stdout:
-                    print(f"      Output: {result.stdout[:300]}")
-                return False
-                
+                    stdout_msg = result.stdout[:500]
+                    print(f"      Output: {stdout_msg}")
+                    if not result.stderr:
+                        error_msg += f" - {stdout_msg}"
+                return False, error_msg
+
     except subprocess.TimeoutExpired:
-        print(f"    ✗ OpenSCAD timeout (>60s) for {object_name}")
-        return False
+        error_msg = "OpenSCAD timeout (>120s)"
+        print(f"    ✗ {error_msg}")
+        return False, error_msg
     except Exception as e:
-        print(f"    ✗ Render error for {object_name}: {e}")
-        return False
+        error_msg = f"Render error: {str(e)}"
+        print(f"    ✗ {error_msg}")
+        return False, error_msg
 
 # =============================================================================
 # EVALUATION
@@ -367,90 +364,122 @@ def evaluate_model(config):
     print("\n" + "="*60)
     print("🚀 MODEL EVALUATION - OpenSCAD Generation Test")
     print("="*60)
-    
-    # Get model path
+
+    # Get model path and name
     model_path = download_gguf_model(config)
     llama_cli_path = get_llama_cli_path()
-    
+    model_name = config['model_config']['hub_model_name']
+
     print(f"\n📋 Test Configuration:")
+    print(f"   Model: {model_name}")
     print(f"   Objects to test: {len(TEST_OBJECTS)}")
     print(f"   Objects: {', '.join(TEST_OBJECTS)}")
     print()
-    
+
+    # Create results file and initialize with metadata
+    timestamp = datetime.now()
+    results_file = f"evaluation_results_{timestamp.strftime('%Y%m%d_%H%M%S')}.json"
+
     results = []
-    
+
+    def save_results():
+        """Helper function to save current results to JSON"""
+        total = len(results)
+        code_success = sum(1 for r in results if r['code_extracted'])
+        render_success = sum(1 for r in results if r['render_success'])
+        avg_tokens = sum(r['tokens_generated'] for r in results) / total if total > 0 else 0
+
+        with open(results_file, 'w') as f:
+            json.dump({
+                'model_name': model_name,
+                'timestamp': timestamp.isoformat(),
+                'date': timestamp.strftime('%Y-%m-%d'),
+                'time': timestamp.strftime('%H:%M:%S'),
+                'total_tests': len(TEST_OBJECTS),
+                'completed_tests': total,
+                'code_extraction_success': code_success,
+                'code_extraction_rate': f"{code_success/total*100:.1f}%" if total > 0 else "0%",
+                'render_success': render_success,
+                'render_success_rate': f"{render_success/total*100:.1f}%" if total > 0 else "0%",
+                'average_tokens_generated': f"{avg_tokens:.0f}",
+                'results': results
+            }, f, indent=2)
+
+    # Initialize empty results file
+    save_results()
+    print(f"📝 Results will be saved to: {results_file}")
+
     for i, obj in enumerate(TEST_OBJECTS, 1):
         print(f"\n[{i}/{len(TEST_OBJECTS)}] Testing: {obj}")
         print("-" * 60)
-        
+
         # Generate
-        output, tokens_generated = run_inference(model_path, obj, llama_cli_path)
-        
+        output, tokens_generated, inference_error = run_inference(model_path, obj, llama_cli_path)
+
         if not output:
             results.append({
                 'object': obj,
                 'code_extracted': False,
                 'render_success': False,
                 'tokens_generated': 0,
+                'code': None,
+                'inference_error': inference_error,
+                'render_error': None,
             })
+            save_results()  # Save after each test
             continue
-        
+
         # Extract code
         scad_code = extract_openscad_code(output)
         code_extracted = scad_code is not None and len(scad_code.strip()) > 0
-        
+
+        render_error = None
         if code_extracted:
             print(f"  ✓ OpenSCAD code extracted ({len(scad_code)} chars, ~{tokens_generated} tokens)")
-            
+
             # Try to render
-            render_success = render_openscad(scad_code, obj)
+            render_success, render_error = render_openscad(scad_code, obj)
         else:
             print(f"  ✗ Failed to extract OpenSCAD code")
             render_success = False
-        
+            render_error = "No code extracted from response"
+
         results.append({
             'object': obj,
             'code_extracted': code_extracted,
             'render_success': render_success,
             'tokens_generated': tokens_generated,
+            'code': scad_code,
+            'inference_error': inference_error,
+            'render_error': render_error,
         })
+
+        # Save results after each test
+        save_results()
+        print(f"  💾 Progress saved ({len(results)}/{len(TEST_OBJECTS)} tests completed)")
     
     # Print summary
     print("\n" + "="*60)
     print("📊 EVALUATION RESULTS")
     print("="*60)
-    
+
     code_success = sum(1 for r in results if r['code_extracted'])
     render_success = sum(1 for r in results if r['render_success'])
     total = len(results)
     avg_tokens = sum(r['tokens_generated'] for r in results) / total if total > 0 else 0
-    
+
     print(f"\n✨ Code Extraction Success Rate: {code_success}/{total} ({code_success/total*100:.1f}%)")
     print(f"🎨 Render Success Rate: {render_success}/{total} ({render_success/total*100:.1f}%)")
     print(f"📝 Average Tokens Generated: {avg_tokens:.0f}")
-    
+
     print(f"\n{'Object':<30} {'Code':<6} {'Render':<8} {'Tokens':<8}")
     print("-" * 52)
     for r in results:
         code_status = "✓" if r['code_extracted'] else "✗"
         render_status = "✓" if r['render_success'] else "✗"
         print(f"{r['object']:<30} {code_status:<6} {render_status:<8} {r['tokens_generated']:<8}")
-    
-    # Save results to JSON
-    results_file = f"evaluation_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    with open(results_file, 'w') as f:
-        json.dump({
-            'timestamp': datetime.now().isoformat(),
-            'total_tests': total,
-            'code_extraction_success': code_success,
-            'code_extraction_rate': f"{code_success/total*100:.1f}%",
-            'render_success': render_success,
-            'render_success_rate': f"{render_success/total*100:.1f}%",
-            'average_tokens_generated': f"{avg_tokens:.0f}",
-            'results': results
-        }, f, indent=2)
-    
-    print(f"\n💾 Results saved to: {results_file}")
+
+    print(f"\n💾 Final results saved to: {results_file}")
     print("="*60)
 
 # =============================================================================
