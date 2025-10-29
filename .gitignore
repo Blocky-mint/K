@@ -22,4 +22,9 @@ data/openscad_dataset.json
 train/gguf/
 train/models/
 
-data/v3/images/
+data/*/images/
+
+
+train/evaluation/*/*.scad
+train/evaluation/*/*.stl
+train/evaluation/*/*.png
