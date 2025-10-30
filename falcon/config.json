@@ -6,7 +6,7 @@
     "load_in_4bit": true
   },
   "lora": {
-    "r": 16,
+    "r": 64,
     "target_modules": [
       "q_proj",
       "k_proj",
@@ -16,7 +16,7 @@
       "up_proj",
       "down_proj"
     ],
-    "lora_alpha": 16,
+    "lora_alpha": 128,
     "lora_dropout": 0.0,
     "use_gradient_checkpointing": "unsloth",
     "random_state": 3407
@@ -28,20 +28,22 @@
   },
   "training": {
     "per_device_train_batch_size": 2,
-    "gradient_accumulation_steps": 8,
-    "warmup_steps": 5,
+    "gradient_accumulation_steps": 16,
+    "warmup_steps": 100,
     "max_steps": -1,
-    "num_train_epochs": 1,
-    "learning_rate": 2e-4,
+    "num_train_epochs": 6,
+    "learning_rate": 5e-5,
     "logging_steps": 1,
     "optim": "adamw_8bit",
     "weight_decay": 0.01,
-    "lr_scheduler_type": "linear",
+    "lr_scheduler_type": "cosine",
     "seed": 3407,
     "output_dir": "outputs",
     "report_to": "none",
     "dataset_num_proc": 2,
-    "packing": false
+    "packing": false,
+    "eval_strategy": "steps",
+    "eval_steps": 50
   },
   "output": {
     "model_name": "ThomasTheMaker/k-falcon-0.5b",
