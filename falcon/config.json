@@ -1,0 +1,54 @@
+{
+  "model": {
+    "name": "unsloth/Falcon-H1-0.5B-Instruct",
+    "max_seq_length": 1024,
+    "dtype": null,
+    "load_in_4bit": true
+  },
+  "lora": {
+    "r": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "lora_alpha": 16,
+    "lora_dropout": 0.0,
+    "use_gradient_checkpointing": "unsloth",
+    "random_state": 3407
+  },
+  "dataset": {
+    "name": "ThomasTheMaker/Synthetic-Object-v2",
+    "split": "train",
+    "prompt_prefix": "hey cadmonkey, make me a "
+  },
+  "training": {
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 8,
+    "warmup_steps": 5,
+    "max_steps": -1,
+    "num_train_epochs": 1,
+    "learning_rate": 2e-4,
+    "logging_steps": 1,
+    "optim": "adamw_8bit",
+    "weight_decay": 0.01,
+    "lr_scheduler_type": "linear",
+    "seed": 3407,
+    "output_dir": "outputs",
+    "report_to": "none",
+    "dataset_num_proc": 2,
+    "packing": false
+  },
+  "output": {
+    "model_name": "ThomasTheMaker/k-falcon-0.5b",
+    "merged_model_dir": "merged_model",
+    "gguf_model_name": "falcon-openscad",
+    "gguf_quantizations": ["q4_k_m", "q8_0"],
+    "push_to_hub": false
+  }
+}
+
